@@ -1,14 +1,28 @@
 import React, { Component } from 'react';
-import ScriptTag from 'react-script-tag';
 import AOS from 'aos';
-import classNames from 'classnames';
 import { Watch } from 'scrollmonitor-react';
 import '../assets/css/style.css';
 import '../assets/vendor/icofont/icofont.min.css';
-import '../assets/vendor/boxicons/css/boxicons.min.css';
-import '../assets/vendor/aos/aos.css';
+import { Link, animateScroll as scroll } from "react-scroll";
+
 export default Watch(
   class Landing extends Component {
+    constructor(props) {
+      super(props);
+      this.state = {
+        isNavOpen: false,
+      }
+      this.toggleNavbar = this.toggleNavbar.bind(this);
+      this.scrollToTop = this.scrollToTop.bind(this);
+    }
+    toggleNavbar() {
+      this.setState({
+        isNavOpen: !this.state.isNavOpen
+      });
+    }
+    scrollToTop = () => {
+      scroll.scrollToTop();
+    };
     componentDidMount() {
       this.aos = AOS;
       this.aos.init({
@@ -24,17 +38,51 @@ export default Watch(
         <div className="">
           <header id="header" className="fixed-top">
             <div className="container d-flex align-items-center">
-              <h1 className="logo mr-auto"><a href="index.html">O<span>z</span>one</a></h1>
+              <h1 className="logo mr-auto">
+                <a className="nav-logo" onClick={this.scrollToTop}>O<span>z</span>one</a>
+              </h1>
               <nav className="nav-menu d-none d-lg-block">
                 <ul>
-                  <li className="active"><a href="#hero">Home</a></li>
-                  <li><a href="#about" >About</a></li>
-                  <li><a href="#faq">F.A.Q</a></li>
-                  <li><a href="#contact">Contact</a></li>
+                  <li>
+                    <Link to="hero"
+                    activeClass="active"
+                      spy={true}
+                      smooth={true}
+                      offset={-70}
+                      duration={500}>Home
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="about"
+                    activeClass="active"
+                      spy={true}
+                      smooth={true}
+                      offset={-70}
+                      duration={500}>About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link to="faq"
+                    activeClass="active"
+                      spy={true}
+                      smooth={true}
+                      offset={-70}
+                      duration={500}>F.A.Q
+                      </Link>
+                  </li>
+                  <li>
+                    <Link to="contact"
+                      activeClass="active"
+                      spy={true}
+                      smooth={true}
+                      offset={-70}
+                      duration={500}>Contact
+                    </Link>
+                  </li>
                 </ul>
               </nav>
             </div>
-          </header>
+          </header><br/><br/>
           <section id="hero" className="text-dark">
             <div className="container" >
               <div className="row">
@@ -126,7 +174,7 @@ export default Watch(
                 </div>
               </div>
             </section>
-            <section id="faq" className="faq section-bg"><br/><br/>
+            <section id="faq" className="faq section-bg"><br /><br />
               <div className="container" data-aos="fade-up">
                 <div className="section-title">
                   <h3>Frequently Asked <span>Questions</span></h3>
@@ -289,15 +337,7 @@ export default Watch(
               </div>
             </section>
           </footer>
-          <ScriptTag src="../vendor/jquery/jquery.min.js"></ScriptTag>
-          <ScriptTag src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></ScriptTag>
-          <ScriptTag src="../vendor/jquery.easing/jquery.easing.min.js"></ScriptTag>
-          <ScriptTag src="../vendor/php-email-form/validate.js"></ScriptTag>
-          <ScriptTag src="../vendor/waypoints/jquery.waypoints.min.js"></ScriptTag>
-          <ScriptTag src="../vendor/counterup/counterup.min.js"></ScriptTag>
-          <ScriptTag src="../vendor/isotope-layout/isotope.pkgd.min.js"></ScriptTag>
-          <ScriptTag src="../vendor/aos/aos.js"></ScriptTag>
-          <ScriptTag src="../js/main.js"></ScriptTag>
+
         </div>
       );
     }
