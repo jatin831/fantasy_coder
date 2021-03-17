@@ -4,6 +4,7 @@ import { Watch } from 'scrollmonitor-react';
 import '../assets/css/style.css';
 import '../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
+import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, ModalFooter } from "reactstrap";
 
 export default Watch(
   class Landing extends Component {
@@ -11,13 +12,27 @@ export default Watch(
       super(props);
       this.state = {
         isNavOpen: false,
+        isLoginOpen: false,
+        isSignUpOpen: false,
       }
       this.toggleNavbar = this.toggleNavbar.bind(this);
       this.scrollToTop = this.scrollToTop.bind(this);
+      this.toggleLogin = this.toggleLogin.bind(this);
+      
     }
     toggleNavbar() {
       this.setState({
         isNavOpen: !this.state.isNavOpen
+      });
+    }
+    toggleLogin() {
+      this.setState({
+        isLoginOpen: !this.state.isLoginOpen
+      });
+    }
+    toggleLogin() {
+      this.setState({
+        isLoginOpen: !this.state.isLoginOpen
       });
     }
     scrollToTop = () => {
@@ -43,46 +58,80 @@ export default Watch(
               </h1>
               <nav className="nav-menu d-none d-lg-block">
                 <ul>
-                  <li>
+                  <li className="align-self-center">
                     <Link to="hero"
-                    activeClass="active"
+                      activeClass="active"
                       spy={true}
                       smooth={true}
                       offset={-70}
                       duration={500}>Home
-                    </Link>
+              </Link>
                   </li>
-                  <li>
+                  <li className="align-self-center">
                     <Link to="about"
-                    activeClass="active"
+                      activeClass="active"
                       spy={true}
                       smooth={true}
                       offset={-70}
                       duration={500}>About
-                    </Link>
+              </Link>
                   </li>
-                  <li>
+                  <li className="align-self-center">
                     <Link to="faq"
-                    activeClass="active"
+                      activeClass="active"
                       spy={true}
                       smooth={true}
                       offset={-70}
                       duration={500}>F.A.Q
-                      </Link>
+                </Link>
                   </li>
-                  <li>
+                  <li className="align-self-center">
                     <Link to="contact"
                       activeClass="active"
                       spy={true}
                       smooth={true}
                       offset={-70}
                       duration={500}>Contact
-                    </Link>
+              </Link>
+                  </li>
+                  <li className="align-self-center">
+                    <Button color="light" onClick={this.toggleLogin}>Login</Button>
+                    <span style={{ color: "white", fontWeight: "bold" }}>&nbsp; or &nbsp;</span>
+                    <Button color="light" onClick={this.toggleSignUp}>Sign Up</Button>
                   </li>
                 </ul>
               </nav>
             </div>
-          </header><br/><br/>
+
+            <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLogin} >
+              <ModalHeader toggle={this.toggleLogin}>Login</ModalHeader>
+              <ModalBody>
+                <Form onSubmit={this.handleLogin}>
+                  <FormGroup>
+                    <Label htmlFor="username">Username</Label>
+                    <Input type="text" id="username" name="username"
+                      innerRef={(input) => this.username = input} />
+                  </FormGroup>
+                  <FormGroup>
+                    <Label htmlFor="password">Password</Label>
+                    <Input type="password" id="password" name="password"
+                      innerRef={(input) => this.password = input} />
+                  </FormGroup>
+                  <FormGroup check>
+                    <Label check>
+                      <Input type="checkbox" name="remember"
+                        innerRef={(input) => this.remember = input} />Remember me
+                      </Label>
+                  </FormGroup>
+                </Form>
+              </ModalBody>
+              <ModalFooter>
+                <Button color="secondary">Close</Button>
+                <Button color="primary">Save changes</Button>
+              </ModalFooter>
+            </Modal>
+          </header><br /><br />
+
           <section id="hero" className="text-dark">
             <div className="container" >
               <div className="row">

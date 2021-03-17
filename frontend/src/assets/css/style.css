@@ -104,7 +104,7 @@ h1, h2, h3, h4, h5, h6 {
   background: #402dfb;
   transition: all 0.5s;
   z-index: 997;
-  padding: 25px 0;
+  padding: 15px 0;
   box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
 }
 
@@ -160,7 +160,6 @@ h1, h2, h3, h4, h5, h6 {
   margin: 0;
   padding: 0;
   list-style: none;
-  font-family: IcoFont;
 }
 
 .nav-menu > ul {
@@ -172,13 +171,18 @@ h1, h2, h3, h4, h5, h6 {
   white-space: nowrap;
   padding: 10px 0 10px 28px;
 }
+.nav-menu Button{
+    font-family: "Open Sans", sans-serif;
+    font-weight: 600;
+    padding-top: 2px;
+    padding-bottom: 2px;
 
+  }
 .nav-menu a {
   display: block;
   position: relative;
   color: #222222;
   /* transition: 0.3s; */
-  font-size: 15px;
   font-weight: 600;
   padding: 0 3px;
   font-family: "Open Sans", sans-serif;
