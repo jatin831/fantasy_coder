@@ -57,7 +57,7 @@ class Program:
         if self.language == 'java':
             cmd = 'javac {}'.format(self.fileName)
         elif self.language == 'c':
-            cmd = 'gcc -o {0} {1}'.format(self.name, self.fileName)
+            cmd = 'gcc {1}'.format(self.name, self.fileName)
         elif self.language == 'cpp':
             cmd = 'g++ -o {0} {1}'.format(self.name, self.fileName)
         else:
@@ -72,7 +72,8 @@ class Program:
                 cmd,
                 stdout=subprocess.PIPE,
                 stderr=subprocess.PIPE,
-                universal_newlines=True
+                universal_newlines=True,
+                shell = True
             )
 
             # Check for errors
@@ -94,9 +95,11 @@ class Program:
         cmd = None
         if self.language == 'java':
             cmd = 'java {}'.format(self.name)
+            print("JAVA COMMAND: ", cmd)
         elif self.language in ['c', 'cpp']:
-            cmd = self.name
-        elif self.language == 'python': cmd = 'python {}.py'.format(self.name)
+            cmd = "./a.out"
+            print("C COMMAND: ", cmd)
+        elif self.language == 'python': cmd = 'python3 {}.py'.format(self.name)
             
 
         # Invalid files
@@ -108,24 +111,27 @@ class Program:
                 fin = None
                 if self.inputFile and os.path.isfile(self.inputFile):
                     fin = open(self.inputFile, 'r')
-                proc = subprocess.run(
+                proc = subprocess.call(
                     cmd,
                     stdin=fin,
                     stdout=fout,
                     stderr=subprocess.PIPE,
                     timeout=self.timeLimit,
+                    shell=True,
                     universal_newlines=True
                 )
-
             # Check for errors
-            if proc.returncode != 0:
+            if proc != 0:
                 return 402, proc.stderr
             else:
                 return 200, None
         except TimeoutExpired as tle:
+            print("Return error")
             return 408, tle
         except CalledProcessError as e:
             print(e.output)
+        except Exception as e:
+            return 408, e
 
         # Perform cleanup
         if self.language == 'java':
@@ -159,6 +165,7 @@ def codechecker(filename, inputfile=None, expectedoutput=None, timeout=1, check=
         print('Compiling... {0}({1})'.format(STATUS_CODES[compileResult], compileResult), flush=True)
         if compileErrors is not None:
             sys.stdout.flush()
+            return 401, compileErrors
             print(compileErrors, file=sys.stderr)
             exit(0)
 
@@ -167,6 +174,7 @@ def codechecker(filename, inputfile=None, expectedoutput=None, timeout=1, check=
         print('Running... {0}({1})'.format(STATUS_CODES[runtimeResult], runtimeResult), flush=True)
         if runtimeErrors is not None:
             sys.stdout.flush()
+            return runtimeResult ,runtimeErrors
             print(runtimeErrors, file=sys.stderr)
             exit(0)
 
@@ -176,18 +184,21 @@ def codechecker(filename, inputfile=None, expectedoutput=None, timeout=1, check=
             print('Verdict... {0}({1})'.format(STATUS_CODES[matchResult], matchResult), flush=True)
             if matchErrors is not None:
                 sys.stdout.flush()
+                return matchResult, matchErrors
                 print(matchErrors, file=sys.stderr)
                 exit(0)
+            return matchResult,STATUS_CODES[matchResult]
     else:
         print('FATAL: Invalid file', file=sys.stderr)
 
 
 if __name__ == '__main__':
 
-    codechecker(
-        filename='inf.py',               # Source code file
+    code, msg = codechecker(
+        filename='add.py',               # Source code file
         inputfile='input.txt',                  # Input file
         expectedoutput='output.txt',     # Expected output
         timeout=2,                              # Time limit
         check=True                              # Set to true to check actual output against expected output
     )
+    print("----------------\n", code,msg)
