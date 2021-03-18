@@ -55,9 +55,68 @@ export default Watch(
         <div className="">
           <header id="header" className="fixed-top">
             <div className="container d-flex align-items-center">
-              <h1 className="logo mr-auto">
-                <a className="nav-logo" onClick={this.scrollToTop}>O<span>z</span>one</a>
-              </h1>
+              <Navbar dark expand="md" style={{width:"100%"}}>
+                <div className="container">
+                  <NavbarBrand className="mr-auto" href="/">
+                    <h1 className="logo mr-auto">
+                      <a className="nav-logo" onClick={this.scrollToTop}>O<span>z</span>one</a>
+                    </h1>
+                  </NavbarBrand>
+                  <NavbarToggler onClick={this.toggleNavbar} className="ml-auto" />
+                  <Collapse isOpen={this.state.isNavOpen} navbar>
+                    <Nav navbar className="ml-auto d-flex align-items-center">
+                      <NavItem>
+                        <Link className="nav-link" to="hero"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>
+                          Home
+                        </Link>
+                      </NavItem>
+                      <NavItem>
+                        <Link className="nav-link" to="about"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>
+                          About
+                        </Link>
+                      </NavItem>
+                      <NavItem>
+                        <Link className="nav-link" to="faq"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>
+                          Menu
+                        </Link>
+                      </NavItem>
+                      <NavItem>
+                        <Link className="nav-link" to="contact"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>
+                          Contact Us
+                        </Link>
+                      </NavItem>
+                    </Nav>
+                    <Nav className="ml-0 ml-md-2 d-flex align-items-center" navbar>
+                      <NavItem className="nav-buttons">
+                        <Button color="light" onClick={this.toggleLoginModal}>Login</Button>
+                        <span className="nav-or"style={{ color: "white"}}>&nbsp; OR &nbsp;</span>
+                        <Button color="light" onClick={this.toggleSignUpModal}>Sign Up</Button>
+                      </NavItem>
+                    </Nav>
+                  </Collapse>
+                </div>
+              </Navbar>
+              {/* 
               <nav className="nav-menu d-none d-lg-block">
                 <ul>
                   <li className="align-self-center">
@@ -102,7 +161,7 @@ export default Watch(
                     <Button color="light" onClick={this.toggleSignUpModal}>Sign Up</Button>
                   </li>
                 </ul>
-              </nav>
+              </nav> */}
             </div>
             {/* Login Modal */}
             <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLoginModal} className="login">
@@ -138,10 +197,10 @@ export default Watch(
                 <ModalBody>
                   <div className="container">
                     <FormGroup className="row d-flex">
-                      <div className="col-12 col-md-6 mt-2 mt-md-0 pl-0">
+                      <div className="col-12 col-md-6 mt-2 mt-md-0 px-0 pr-md-1">
                         <Input type="text" id="firstName" name="firstName" placeholder="First Name" />
                       </div>
-                      <div className="col-12 col-md-6 mt-2 mt-md-0 pr-0">
+                      <div className="col-12 col-md-6 mt-2 mt-md-0 px-0">
                       <Input type="text" id="lastName" name="lastName" placeholder="Last Name" />
                       </div>
                     </FormGroup>
@@ -169,7 +228,6 @@ export default Watch(
               </Form>
             </Modal>
           </header><br /><br />
-
           <section id="hero" className="text-dark">
             <div className="container" >
               <div className="row">
