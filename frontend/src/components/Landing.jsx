@@ -116,52 +116,6 @@ export default Watch(
                   </Collapse>
                 </div>
               </Navbar>
-              {/* 
-              <nav className="nav-menu d-none d-lg-block">
-                <ul>
-                  <li className="align-self-center">
-                    <Link to="hero"
-                      activeClass="active"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={500}>Home
-              </Link>
-                  </li>
-                  <li className="align-self-center">
-                    <Link to="about"
-                      activeClass="active"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={500}>About
-              </Link>
-                  </li>
-                  <li className="align-self-center">
-                    <Link to="faq"
-                      activeClass="active"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={500}>F.A.Q
-                </Link>
-                  </li>
-                  <li className="align-self-center">
-                    <Link to="contact"
-                      activeClass="active"
-                      spy={true}
-                      smooth={true}
-                      offset={-70}
-                      duration={500}>Contact
-              </Link>
-                  </li>
-                  <li className="align-self-center">
-                    <Button color="light" onClick={this.toggleLoginModal}>Login</Button>
-                    <span style={{ color: "white", fontWeight: "bold" }}>&nbsp; or &nbsp;</span>
-                    <Button color="light" onClick={this.toggleSignUpModal}>Sign Up</Button>
-                  </li>
-                </ul>
-              </nav> */}
             </div>
             {/* Login Modal */}
             <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLoginModal} className="login">
