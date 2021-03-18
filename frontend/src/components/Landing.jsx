@@ -17,24 +17,26 @@ export default Watch(
       }
       this.toggleNavbar = this.toggleNavbar.bind(this);
       this.scrollToTop = this.scrollToTop.bind(this);
-      this.toggleLogin = this.toggleLogin.bind(this);
-      
+      this.toggleLoginModal = this.toggleLoginModal.bind(this);
+      this.toggleSignUpModal = this.toggleSignUpModal.bind(this);
+
     }
     toggleNavbar() {
       this.setState({
         isNavOpen: !this.state.isNavOpen
       });
     }
-    toggleLogin() {
+    toggleLoginModal() {
       this.setState({
         isLoginOpen: !this.state.isLoginOpen
       });
     }
-    toggleLogin() {
+    toggleSignUpModal() {
       this.setState({
-        isLoginOpen: !this.state.isLoginOpen
+        isSignUpOpen: !this.state.isSignUpOpen
       });
     }
+    
     scrollToTop = () => {
       scroll.scrollToTop();
     };
@@ -95,40 +97,76 @@ export default Watch(
               </Link>
                   </li>
                   <li className="align-self-center">
-                    <Button color="light" onClick={this.toggleLogin}>Login</Button>
+                    <Button color="light" onClick={this.toggleLoginModal}>Login</Button>
                     <span style={{ color: "white", fontWeight: "bold" }}>&nbsp; or &nbsp;</span>
-                    <Button color="light" onClick={this.toggleSignUp}>Sign Up</Button>
+                    <Button color="light" onClick={this.toggleSignUpModal}>Sign Up</Button>
                   </li>
                 </ul>
               </nav>
             </div>
-
-            <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLogin} >
-              <ModalHeader toggle={this.toggleLogin}>Login</ModalHeader>
-              <ModalBody>
-                <Form onSubmit={this.handleLogin}>
-                  <FormGroup>
-                    <Label htmlFor="username">Username</Label>
-                    <Input type="text" id="username" name="username"
-                      innerRef={(input) => this.username = input} />
-                  </FormGroup>
-                  <FormGroup>
-                    <Label htmlFor="password">Password</Label>
-                    <Input type="password" id="password" name="password"
-                      innerRef={(input) => this.password = input} />
-                  </FormGroup>
-                  <FormGroup check>
-                    <Label check>
-                      <Input type="checkbox" name="remember"
-                        innerRef={(input) => this.remember = input} />Remember me
-                      </Label>
-                  </FormGroup>
-                </Form>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="secondary">Close</Button>
-                <Button color="primary">Save changes</Button>
-              </ModalFooter>
+            {/* Login Modal */}
+            <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLoginModal} className="login">
+              <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
+              <Form onSubmit={this.handleLogin}>
+                <ModalBody>
+                  <div className="container">
+                    <FormGroup className="row">
+                      <Input type="text" id="username" name="username" placeholder="Username" />
+                    </FormGroup>
+                    <FormGroup className="row">
+                      <Input type="password" id="password" name="password" placeholder="Password" />
+                    </FormGroup>
+                    <FormGroup check className="row">
+                      <Label check>
+                        <Input type="checkbox" name="remember"
+                          innerRef={(input) => this.remember = input} />Remember me
+                      </Label><br/>
+                    </FormGroup>
+                    <FormGroup className="row d-flex justify-content-center">
+                      <Button color="primary">Login
+                      <span class='bx bxs-arrow-to-right' style={{fontSize:"24px"}}></span>
+                      </Button>
+                    </FormGroup>
+                  </div>
+                </ModalBody>
+              </Form>
+            </Modal>
+            {/* Sign Up Modal */}
+            <Modal isOpen={this.state.isSignUpOpen} toggle={this.toggleSignUpModal} >
+              <ModalHeader toggle={this.toggleSignUpModal}>Sign Up</ModalHeader>
+              <Form onSubmit={this.handleLogin}>
+                <ModalBody>
+                  <div className="container">
+                    <FormGroup className="row d-flex">
+                      <div className="col-12 col-md-6 mt-2 mt-md-0 pl-0">
+                        <Input type="text" id="firstName" name="firstName" placeholder="First Name" />
+                      </div>
+                      <div className="col-12 col-md-6 mt-2 mt-md-0 pr-0">
+                      <Input type="text" id="lastName" name="lastName" placeholder="Last Name" />
+                      </div>
+                    </FormGroup>
+                    <FormGroup className="row">
+                      <Input type="email" id="email" name="email" placeholder="Email" />
+                    </FormGroup>
+                    <FormGroup className="row">
+                      <Input type="text" id="username" name="username" placeholder="Username" />
+                    </FormGroup>
+                    <FormGroup className="row">
+                      <Input type="password" id="password" name="password" placeholder="Password" />
+                    </FormGroup>
+                    <FormGroup check className="row">
+                      <Label check>
+                        <Input type="checkbox" name="remember"
+                          innerRef={(input) => this.remember = input} />Remember me
+                      </Label><br/>
+                    </FormGroup>
+                    <FormGroup className="row d-flex justify-content-center">
+                      <Button color="primary">Sign Up
+                      </Button>
+                    </FormGroup>
+                  </div>
+                </ModalBody>
+              </Form>
             </Modal>
           </header><br /><br />
 
@@ -183,7 +221,6 @@ export default Watch(
                 </div>
               </div>
             </section>
-
             <section id="about" className="about section-bg bg-white">
               <div className="container" data-aos="fade-up">
                 <div className="section-title">
