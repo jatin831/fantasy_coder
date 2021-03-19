@@ -14,11 +14,27 @@ export default Watch(
         isNavOpen: false,
         isModalOpen: false,
         activeTab: "1",
+        userLogin: {
+          "email": '',
+          "password": '',
+          "remember": false
+        },
+        userSignUp: {
+          "firstname": '',
+          "lastname": '',
+          "username": '',
+          "email": '',
+          "password": '',
+        },
       }
       this.toggleNavbar = this.toggleNavbar.bind(this);
       this.scrollToTop = this.scrollToTop.bind(this);
       this.toggleModal = this.toggleModal.bind(this);
       this.setActiveTab = this.setActiveTab.bind(this);
+      this.handleLoginSubmit = this.handleLoginSubmit.bind(this);
+      this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
+      this.handleLoginChange = this.handleLoginChange.bind(this);
+      this.handleSignUpChange = this.handleSignUpChange.bind(this);
     }
     toggleNavbar() {
       this.setState({
@@ -27,7 +43,8 @@ export default Watch(
     }
     toggleModal() {
       this.setState({
-        isModalOpen: !this.state.isModalOpen
+        isModalOpen: !this.state.isModalOpen,
+        activeTab: "1"
       });
     }
     setActiveTab(selectedTab) {
@@ -47,6 +64,39 @@ export default Watch(
     }
     componentDidUpdate() {
       this.aos.refresh();
+    }
+    handleLoginChange(event) {
+      const target = event.target;
+      const value = (target.type === 'checkbox') ? target.checked : target.value;
+      const name = target.name;
+      let { userLogin } = this.state;
+      this.setState({
+        userLogin: {
+          ...this.state.userLogin,
+          [name]:value 
+        }
+      });
+    }
+    handleSignUpChange(event) {
+      const target = event.target;
+      const value = (target.type === 'checkbox') ? target.checked : target.value;
+      const name = target.name;
+      let { userSignUp } = this.state;
+      this.setState({
+        userSignUp: {
+          ...this.state.userSignUp,
+          [name]:value 
+        }
+      });
+    }
+
+    handleLoginSubmit(event) {
+      alert("Login: " + JSON.stringify(this.state.userLogin));
+      event.preventDefault();
+    }
+    handleSignUpSubmit(event) {
+      alert("SignUp: " + JSON.stringify(this.state.userSignUp));
+      event.preventDefault();
     }
     render() {
       return (
@@ -113,13 +163,13 @@ export default Watch(
                 </div>
               </Navbar>
             </div>
-            {/* Login Modal and Sign Up */}
+            {/* Login and Sign Up Modal*/}
             <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} className="login">
               <ModalBody className="auth-inner">
                 <Nav tabs className="d-flex justify-content-center  align-items-center mt-2 mb-2">
                   <NavItem className="w-50 text-center">
                     <NavLink className={this.state.activeTab == '1' ? 'active' : ''} onClick={() => this.setActiveTab('1')}>
-                      <h4 className="font-weight-bold pb-0 pt-2">Sign In</h4>
+                      <h4 className="font-weight-bold pb-0 pt-2">Login</h4>
                     </NavLink>
                   </NavItem>
                   <NavItem className="w-50 text-center">
@@ -130,20 +180,20 @@ export default Watch(
                 </Nav>
                 <TabContent activeTab={this.state.activeTab} className="mt-3">
                   <TabPane tabId="1">
-                    <form>
-                      {/* <h3 className="font-weight-bold">Sign In</h3> */}
+                    {/* SIGN IN */}
+                    <form onSubmit={this.handleLoginSubmit}>
                       <div className="form-group">
                         <label className="font-weight-bold">Email address</label>
-                        <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" />
+                        <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" value={this.state.userLogin.email} onChange={this.handleLoginChange} required/>
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Password</label>
-                        <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
+                        <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" value={this.state.userLogin.password} onChange={this.handleLoginChange} required/>
                       </div>
                       <div className="form-group">
                         <div className="custom-control custom-checkbox">
-                          <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                          <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                          <input type="checkbox" className="custom-control-input" id="remember" name="remember" value={this.state.userLogin.remember} onChange={this.handleLoginChange}/>
+                          <label className="custom-control-label" htmlFor="remember" >Remember me</label>
                         </div>
                       </div>
                       <button type="submit" className="btn btn-primary btn-block">Submit</button>
@@ -153,31 +203,31 @@ export default Watch(
                     </form>
                   </TabPane>
                   <TabPane tabId="2">
-                    <form>
-                      {/* <h3 className="font-weight-bold">Sign Up</h3> */}
+                    {/* SIGN UP */}
+                    <form onSubmit={this.handleSignUpSubmit}>
                       <div className="form-group">
                         <label className="font-weight-bold">First name</label>
-                        <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" />
+                        <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" value={this.state.userSignUp.firstname} onChange={this.handleSignUpChange}/>
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Last name</label>
-                        <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" />
+                        <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" value={this.state.userSignUp.lastname} onChange={this.handleSignUpChange}/>
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">User name</label>
-                        <input type="text" id="username" name="username" className="form-control" placeholder="User name" />
+                        <input type="text" id="username" name="username" className="form-control" placeholder="User name" value={this.state.userSignUp.username} onChange={this.handleSignUpChange}/>
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Email address</label>
-                        <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" />
+                        <input type="email" name="email" className="form-control" placeholder="Enter email" value={this.state.userSignUp.email} onChange={this.handleSignUpChange}/>
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Password</label>
-                        <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
+                        <input type="password" name="password" className="form-control" placeholder="Enter password" value={this.state.userSignUp.password} onChange={this.handleSignUpChange}/>
                       </div>
                       <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                       <p className="forgot-password text-right">
-                        Already registered <a style={{color:"#167BFF"}} onClick={() => this.setActiveTab('1')} >sign in?</a>
+                        Already registered <a className="or-signin"style={{color:"#167BFF"}} onClick={() => this.setActiveTab('1')} >sign in?</a>
                       </p>
                     </form>
                   </TabPane>

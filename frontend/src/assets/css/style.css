@@ -899,7 +899,9 @@ section {
   color: #7f7d7d;
   margin: 0;
 }
-
+.or-signin:hover{
+  cursor:pointer !important;
+}
 .forgot-password a {
   color: #167bff;
 }
