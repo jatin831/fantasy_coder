@@ -5,6 +5,7 @@ import '../assets/css/style.css';
 import '../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
+import axios from 'axios';
 
 export default Watch(
   class Landing extends Component {
@@ -91,12 +92,24 @@ export default Watch(
     }
 
     handleLoginSubmit(event) {
-      alert("Login: " + JSON.stringify(this.state.userLogin));
       event.preventDefault();
+      const loginData = this.state.userLogin;
+      axios.post(`https://jsonplaceholder.typicode.com/users`, { loginData })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
+      // alert("Login: " + JSON.stringify(this.state.userLogin));
     }
     handleSignUpSubmit(event) {
-      alert("SignUp: " + JSON.stringify(this.state.userSignUp));
       event.preventDefault();
+      const signUpData = this.state.userSignUp;
+      axios.post(`https://jsonplaceholder.typicode.com/users`, { signUpData })
+        .then(res => {
+          console.log(res);
+          console.log(res.data);
+        })
+      // alert("SignUp: " + JSON.stringify(signUpData));
     }
     render() {
       return (
