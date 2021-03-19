@@ -12,30 +12,29 @@ export default Watch(
       super(props);
       this.state = {
         isNavOpen: false,
-        isLoginOpen: false,
-        isSignUpOpen: false,
+        isModalOpen: false,
+        activeTab: "1",
       }
       this.toggleNavbar = this.toggleNavbar.bind(this);
       this.scrollToTop = this.scrollToTop.bind(this);
-      this.toggleLoginModal = this.toggleLoginModal.bind(this);
-      this.toggleSignUpModal = this.toggleSignUpModal.bind(this);
+      this.toggleModal = this.toggleModal.bind(this);
+      this.setActiveTab = this.setActiveTab.bind(this);
     }
     toggleNavbar() {
       this.setState({
         isNavOpen: !this.state.isNavOpen
       });
     }
-    toggleLoginModal() {
+    toggleModal() {
       this.setState({
-        isLoginOpen: !this.state.isLoginOpen
+        isModalOpen: !this.state.isModalOpen
       });
     }
-    toggleSignUpModal() {
+    setActiveTab(selectedTab) {
       this.setState({
-        isSignUpOpen: !this.state.isSignUpOpen
+        activeTab: selectedTab
       });
     }
-
     scrollToTop = () => {
       scroll.scrollToTop();
     };
@@ -107,74 +106,82 @@ export default Watch(
                     </Nav>
                     <Nav className="ml-0 ml-md-2 d-flex align-items-center" navbar>
                       <NavItem className="nav-buttons">
-                        <Button color="light" onClick={this.toggleLoginModal}>Login</Button>
-                        <span className="nav-or" style={{ color: "white" }}>&nbsp; OR &nbsp;</span>
-                        <Button color="light" onClick={this.toggleSignUpModal}>Sign Up</Button>
+                        <Button color="light" onClick={this.toggleModal}>Login</Button>
                       </NavItem>
                     </Nav>
                   </Collapse>
                 </div>
               </Navbar>
             </div>
-            {/* Login Modal */}
-            <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLoginModal} className="login">
+            {/* Login Modal and Sign Up */}
+            <Modal isOpen={this.state.isModalOpen} toggle={this.toggleModal} className="login">
               <ModalBody className="auth-inner">
-                <form>
-                  <h3 className="font-weight-bold">Sign In</h3>
-                  <div className="form-group">
-                    <label className="font-weight-bold">Email address</label>
-                    <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="font-weight-bold">Password</label>
-                    <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
-                  </div>
-
-                  <div className="form-group">
-                    <div className="custom-control custom-checkbox">
-                      <input type="checkbox" className="custom-control-input" id="customCheck1" />
-                      <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
-                    </div>
-                  </div>
-
-                  <button type="submit" className="btn btn-primary btn-block">Submit</button>
-                  <p className="forgot-password text-right">
-                    Forgot <a href="#">password?</a>
-                  </p>
-                </form>
-              </ModalBody>
-            </Modal>
-            {/* Sign Up Modal */}
-            <Modal isOpen={this.state.isSignUpOpen} toggle={this.toggleSignUpModal} >
-              <ModalBody className="auth-inner">
-                <form>
-                  <h3 className="font-weight-bold">Sign Up</h3>
-                  <div className="form-group">
-                    <label className="font-weight-bold">First name</label>
-                    <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" />
-                  </div>
-                  <div className="form-group">
-                    <label className="font-weight-bold">Last name</label>
-                    <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" />
-                  </div>
-                  <div className="form-group">
-                    <label className="font-weight-bold">User name</label>
-                    <input type="text" id="username" name="username" className="form-control" placeholder="User name" />
-                  </div>
-                  <div className="form-group">
-                    <label className="font-weight-bold">Email address</label>
-                    <input type="email" id="email" name="email"className="form-control" placeholder="Enter email" />
-                  </div>
-                  <div className="form-group">
-                    <label className="font-weight-bold">Password</label>
-                    <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
-                  </div>
-                  <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
-                  <p className="forgot-password text-right">
-                    Already registered <a href="#">sign in?</a>
-                  </p>
-                </form>
+                <Nav tabs className="d-flex justify-content-center  align-items-center mt-2 mb-2">
+                  <NavItem className="w-50 text-center">
+                    <NavLink className={this.state.activeTab == '1' ? 'active' : ''} onClick={() => this.setActiveTab('1')}>
+                      <h4 className="font-weight-bold pb-0 pt-2">Sign In</h4>
+                    </NavLink>
+                  </NavItem>
+                  <NavItem className="w-50 text-center">
+                    <NavLink className={this.state.activeTab == '2' ? 'active' : ''} onClick={() => this.setActiveTab('2')}>
+                      <h4 className="font-weight-bold pb-0 pt-2">Sign Up</h4>
+                    </NavLink>
+                  </NavItem>
+                </Nav>
+                <TabContent activeTab={this.state.activeTab} className="mt-3">
+                  <TabPane tabId="1">
+                    <form>
+                      {/* <h3 className="font-weight-bold">Sign In</h3> */}
+                      <div className="form-group">
+                        <label className="font-weight-bold">Email address</label>
+                        <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" />
+                      </div>
+                      <div className="form-group">
+                        <label className="font-weight-bold">Password</label>
+                        <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
+                      </div>
+                      <div className="form-group">
+                        <div className="custom-control custom-checkbox">
+                          <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                          <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                        </div>
+                      </div>
+                      <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                      <p className="forgot-password text-right">
+                        Forgot <a href="#">password?</a>
+                      </p>
+                    </form>
+                  </TabPane>
+                  <TabPane tabId="2">
+                    <form>
+                      {/* <h3 className="font-weight-bold">Sign Up</h3> */}
+                      <div className="form-group">
+                        <label className="font-weight-bold">First name</label>
+                        <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" />
+                      </div>
+                      <div className="form-group">
+                        <label className="font-weight-bold">Last name</label>
+                        <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" />
+                      </div>
+                      <div className="form-group">
+                        <label className="font-weight-bold">User name</label>
+                        <input type="text" id="username" name="username" className="form-control" placeholder="User name" />
+                      </div>
+                      <div className="form-group">
+                        <label className="font-weight-bold">Email address</label>
+                        <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" />
+                      </div>
+                      <div className="form-group">
+                        <label className="font-weight-bold">Password</label>
+                        <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
+                      </div>
+                      <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                      <p className="forgot-password text-right">
+                        Already registered <a style={{color:"#167BFF"}} onClick={() => this.setActiveTab('1')} >sign in?</a>
+                      </p>
+                    </form>
+                  </TabPane>
+                </TabContent>
               </ModalBody>
             </Modal>
           </header><br /><br />
@@ -186,7 +193,7 @@ export default Watch(
                   </h1>
                   <h2>A place to explore the re-defined version of competitive coding..</h2>
                   <div className="d-flex">
-                    <a className="btn-get-started scrollto" onClick={this.toggleLoginModal}>Get Started</a>
+                    <a className="btn-get-started scrollto" onClick={this.toggleModal}>Get Started</a>
                   </div>
                 </div>
                 <div className="col col-12 col-md-4 ">
