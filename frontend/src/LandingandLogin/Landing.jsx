@@ -152,19 +152,23 @@ export default Watch(
                   <h3 className="font-weight-bold">Sign Up</h3>
                   <div className="form-group">
                     <label className="font-weight-bold">First name</label>
-                    <input type="text" className="form-control" placeholder="First name" />
+                    <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" />
                   </div>
                   <div className="form-group">
                     <label className="font-weight-bold">Last name</label>
-                    <input type="text" className="form-control" placeholder="Last name" />
+                    <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" />
+                  </div>
+                  <div className="form-group">
+                    <label className="font-weight-bold">User name</label>
+                    <input type="text" id="username" name="username" className="form-control" placeholder="User name" />
                   </div>
                   <div className="form-group">
                     <label className="font-weight-bold">Email address</label>
-                    <input type="email" className="form-control" placeholder="Enter email" />
+                    <input type="email" id="email" name="email"className="form-control" placeholder="Enter email" />
                   </div>
                   <div className="form-group">
                     <label className="font-weight-bold">Password</label>
-                    <input type="password" className="form-control" placeholder="Enter password" />
+                    <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
                   </div>
                   <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                   <p className="forgot-password text-right">

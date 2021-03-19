@@ -839,9 +839,14 @@ section {
 
 
 /* Login and sign up */
-.login .modal-dialog {
-  border-radius: 0;
-  top: 30%;
+.modal  {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+}
+.modal-dialog {
+  width: 100% !important;
+
 }
 .modal-dialog{
   vertical-align: middle;
