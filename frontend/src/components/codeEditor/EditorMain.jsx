@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Editor from "./EditorComponent";
 import AceExample from "./AceComponent";
-import Problem from "./ProblemComponent";
+import Problem from "../ProblemComponent";
 class Main extends Component {
   state = {  }
   render() { 

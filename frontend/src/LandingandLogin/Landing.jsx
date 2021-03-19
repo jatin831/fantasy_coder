@@ -19,7 +19,6 @@ export default Watch(
       this.scrollToTop = this.scrollToTop.bind(this);
       this.toggleLoginModal = this.toggleLoginModal.bind(this);
       this.toggleSignUpModal = this.toggleSignUpModal.bind(this);
-
     }
     toggleNavbar() {
       this.setState({
@@ -36,7 +35,7 @@ export default Watch(
         isSignUpOpen: !this.state.isSignUpOpen
       });
     }
-    
+
     scrollToTop = () => {
       scroll.scrollToTop();
     };
@@ -55,7 +54,7 @@ export default Watch(
         <div className="">
           <header id="header" className="fixed-top">
             <div className="container d-flex align-items-center">
-              <Navbar dark expand="md" style={{width:"100%"}}>
+              <Navbar dark expand="md" style={{ width: "100%" }}>
                 <div className="container">
                   <NavbarBrand className="mr-auto" href="/">
                     <h1 className="logo mr-auto">
@@ -109,7 +108,7 @@ export default Watch(
                     <Nav className="ml-0 ml-md-2 d-flex align-items-center" navbar>
                       <NavItem className="nav-buttons">
                         <Button color="light" onClick={this.toggleLoginModal}>Login</Button>
-                        <span className="nav-or"style={{ color: "white"}}>&nbsp; OR &nbsp;</span>
+                        <span className="nav-or" style={{ color: "white" }}>&nbsp; OR &nbsp;</span>
                         <Button color="light" onClick={this.toggleSignUpModal}>Sign Up</Button>
                       </NavItem>
                     </Nav>
@@ -119,67 +118,60 @@ export default Watch(
             </div>
             {/* Login Modal */}
             <Modal isOpen={this.state.isLoginOpen} toggle={this.toggleLoginModal} className="login">
-              <ModalHeader toggle={this.toggleLoginModal}>Login</ModalHeader>
-              <Form onSubmit={this.handleLogin}>
-                <ModalBody>
-                  <div className="container">
-                    <FormGroup className="row">
-                      <Input type="text" id="username" name="username" placeholder="Username" />
-                    </FormGroup>
-                    <FormGroup className="row">
-                      <Input type="password" id="password" name="password" placeholder="Password" />
-                    </FormGroup>
-                    <FormGroup check className="row">
-                      <Label check>
-                        <Input type="checkbox" name="remember"
-                          innerRef={(input) => this.remember = input} />Remember me
-                      </Label><br/>
-                    </FormGroup>
-                    <FormGroup className="row d-flex justify-content-center">
-                      <Button color="primary">Login
-                      <span class='bx bxs-arrow-to-right' style={{fontSize:"24px"}}></span>
-                      </Button>
-                    </FormGroup>
+              <ModalBody className="auth-inner">
+                <form>
+                  <h3 className="font-weight-bold">Sign In</h3>
+                  <div className="form-group">
+                    <label className="font-weight-bold">Email address</label>
+                    <input type="email" id="email" name="email" className="form-control" placeholder="Enter email" />
                   </div>
-                </ModalBody>
-              </Form>
+
+                  <div className="form-group">
+                    <label className="font-weight-bold">Password</label>
+                    <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" />
+                  </div>
+
+                  <div className="form-group">
+                    <div className="custom-control custom-checkbox">
+                      <input type="checkbox" className="custom-control-input" id="customCheck1" />
+                      <label className="custom-control-label" htmlFor="customCheck1">Remember me</label>
+                    </div>
+                  </div>
+
+                  <button type="submit" className="btn btn-primary btn-block">Submit</button>
+                  <p className="forgot-password text-right">
+                    Forgot <a href="#">password?</a>
+                  </p>
+                </form>
+              </ModalBody>
             </Modal>
             {/* Sign Up Modal */}
             <Modal isOpen={this.state.isSignUpOpen} toggle={this.toggleSignUpModal} >
-              <ModalHeader toggle={this.toggleSignUpModal}>Sign Up</ModalHeader>
-              <Form onSubmit={this.handleLogin}>
-                <ModalBody>
-                  <div className="container">
-                    <FormGroup className="row d-flex">
-                      <div className="col-12 col-md-6 mt-2 mt-md-0 px-0 pr-md-1">
-                        <Input type="text" id="firstName" name="firstName" placeholder="First Name" />
-                      </div>
-                      <div className="col-12 col-md-6 mt-2 mt-md-0 px-0">
-                      <Input type="text" id="lastName" name="lastName" placeholder="Last Name" />
-                      </div>
-                    </FormGroup>
-                    <FormGroup className="row">
-                      <Input type="email" id="email" name="email" placeholder="Email" />
-                    </FormGroup>
-                    <FormGroup className="row">
-                      <Input type="text" id="username" name="username" placeholder="Username" />
-                    </FormGroup>
-                    <FormGroup className="row">
-                      <Input type="password" id="password" name="password" placeholder="Password" />
-                    </FormGroup>
-                    <FormGroup check className="row">
-                      <Label check>
-                        <Input type="checkbox" name="remember"
-                          innerRef={(input) => this.remember = input} />Remember me
-                      </Label><br/>
-                    </FormGroup>
-                    <FormGroup className="row d-flex justify-content-center">
-                      <Button color="primary">Sign Up
-                      </Button>
-                    </FormGroup>
+              <ModalBody className="auth-inner">
+                <form>
+                  <h3 className="font-weight-bold">Sign Up</h3>
+                  <div className="form-group">
+                    <label className="font-weight-bold">First name</label>
+                    <input type="text" className="form-control" placeholder="First name" />
                   </div>
-                </ModalBody>
-              </Form>
+                  <div className="form-group">
+                    <label className="font-weight-bold">Last name</label>
+                    <input type="text" className="form-control" placeholder="Last name" />
+                  </div>
+                  <div className="form-group">
+                    <label className="font-weight-bold">Email address</label>
+                    <input type="email" className="form-control" placeholder="Enter email" />
+                  </div>
+                  <div className="form-group">
+                    <label className="font-weight-bold">Password</label>
+                    <input type="password" className="form-control" placeholder="Enter password" />
+                  </div>
+                  <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
+                  <p className="forgot-password text-right">
+                    Already registered <a href="#">sign in?</a>
+                  </p>
+                </form>
+              </ModalBody>
             </Modal>
           </header><br /><br />
           <section id="hero" className="text-dark">
