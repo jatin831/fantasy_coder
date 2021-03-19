@@ -4,7 +4,7 @@ import { Watch } from 'scrollmonitor-react';
 import '../assets/css/style.css';
 import '../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
-import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalHeader, ModalBody, Form, FormGroup, Input, Label, ModalFooter } from "reactstrap";
+import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
 
 export default Watch(
   class Landing extends Component {
@@ -91,7 +91,7 @@ export default Watch(
                           smooth={true}
                           offset={-70}
                           duration={500}>
-                          Menu
+                          F.A.Q
                         </Link>
                       </NavItem>
                       <NavItem>
@@ -186,7 +186,7 @@ export default Watch(
                   </h1>
                   <h2>A place to explore the re-defined version of competitive coding..</h2>
                   <div className="d-flex">
-                    <a href="#about" className="btn-get-started scrollto">Get Started</a>
+                    <a className="btn-get-started scrollto" onClick={this.toggleLoginModal}>Get Started</a>
                   </div>
                 </div>
                 <div className="col col-12 col-md-4 ">
@@ -409,9 +409,33 @@ export default Watch(
                   <div className="col-lg-3 col-md-6 footer-links">
                     <h4>Useful Links</h4>
                     <ul>
-                      <li><i className="bx bx-chevron-right"></i> <a href="#">Home</a></li>
-                      <li><i className="bx bx-chevron-right"></i> <a href="#about">About us</a></li>
-                      <li><i className="bx bx-chevron-right"></i> <a href="#faq">F.A.Q</a></li>
+                      <li><i className="bx bx-chevron-right"></i>
+                        <Link to="hero"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>Home
+                        </Link>
+                      </li>
+                      <li><i className="bx bx-chevron-right"></i>
+                        <Link to="about"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>About us
+                        </Link></li>
+                      <li><i className="bx bx-chevron-right"></i>
+                        <Link to="faq"
+                          activeClass="active"
+                          spy={true}
+                          smooth={true}
+                          offset={-70}
+                          duration={500}>
+                          F.A.Q
+                        </Link>
+                      </li>
                       <li><i className="bx bx-chevron-right"></i> <a href="#">Terms of service</a></li>
                       <li><i className="bx bx-chevron-right"></i> <a href="#">Privacy policy</a></li>
                     </ul>
