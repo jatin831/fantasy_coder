@@ -1,6 +1,7 @@
-from flask import Flask, render_template, requests
+from flask import Flask, render_template, request
+import json
 import re
-import db_query
+from db_query import *
 
 app = Flask(__name__)
 
@@ -11,12 +12,13 @@ STATUS_CODES = {
 
 @app.route('/register', methods=['POST'])
 def regsiter():
-	username = requests.form.get('username')
-	fname = requests.form.get('fname')
-	lname = requests.form.get('lname')
-	email_id = requests.form.get('email_id')
-	password = request.form.get('password')
-	cpassword = request.form.get('cpassword')
+	data = request.get_json()
+	username = data['username']
+	fname = data['fname']
+	lname = data['lname']
+	email_id = data['email_id']
+	password = data['password']
+	cpassword = data['cpassword']
 
 	regex_email = '^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$'
 	#password should have at least one number
@@ -27,9 +29,7 @@ def regsiter():
 	regex_pass = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$"
 	if (re.search(regex_email,emailid)) and (re.search(regex_pass,password)):
 		if password == cpassword:
-			resp = make_response(redirect('/'))
-			resp.set_cookie("username",username)
-			return resp
+			return 200, 'user registered'
 		else:
 			return 420, 'password does not match'
 	else:
@@ -37,19 +37,25 @@ def regsiter():
     
 @app.route('/login', methods=['post'])
 def login():
-	emailid = request.form.get('emailid')
-	password = request.form.get('password')
-	if emailid==None or password==None:
-		return render_template('login.html')
+	data = request.get_json()
+	email_id = data['email_id']
+	password = data['password']
+	if emailid==None :
+		return 420, 'email required'
+	elif password==None:
+		return 420, 'password required'
 	else:
 		user = {'emailid':emailid, "password":password}
 		check_status,msg=checkUser(user)
 		if check_status==200:
-			resp = make_response(redirect("/"))
-			resp.set_cookie("username",username)
-			return resp
+			return 200, 'successfuly logged in'
 		if check_status==420:
-			return 400, 'wrong credentials'
+			return 420, 'wrong credentials'
+
+if __name__ == '__main__':
+	code,msg=register()
+	return msg
+	
 
 		
 

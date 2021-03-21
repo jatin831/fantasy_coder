@@ -29,7 +29,7 @@ def checkUser(user):
 			host="127.0.0.1",
 			port="5432")
 		cursor = connection.cursor()
-		cursor.execute("SELECT username,email_id,password FROM users WHERE email_id=%s AND password=%s",(user['email_id'],user['password']))
+		cursor.execute("SELECT username,email_id,password FROM users WHERE email_id=%s AND password=crypt(%s, password)",(user['email_id'],user['password']))
 		record = cursor.fetchall()
 		if(connection):
 			cursor.close()
