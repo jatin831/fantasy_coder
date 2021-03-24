@@ -62,6 +62,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Back to top button
 --------------------------------------------------------------*/
+
 .back-to-top {
   position: fixed;
   display: none;
@@ -91,6 +92,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Header
 --------------------------------------------------------------*/
+
 #header {
   background: #402dfb;
   transition: all 0.5s;
@@ -121,14 +123,17 @@ h1, h2, h3, h4, h5, h6 {
 #header .logo a span {
   color: #f0c017;
 }
+
 #header li a {
   color: #fff;
 }
+
 #header li a:hover {
   color: #fff;
   text-decoration: solid;
   text-decoration-color: #fff;
 }
+
 #header .logo img {
   max-height: 40px;
 }
@@ -147,15 +152,16 @@ h1, h2, h3, h4, h5, h6 {
 # Navigation Menu
 --------------------------------------------------------------*/
 
-#header Nav .nav-link ,.nav-or {
+#header Nav .nav-link, .nav-or {
   color: white;
   font-weight: bold;
   padding: 0;
   margin: 0px 10px;
 }
-@media screen and (max-width:768px){
-  #header Nav .nav-link ,.nav-buttons{
-    margin-top:10px;
+
+@media screen and (max-width:768px) {
+  #header Nav .nav-link, .nav-buttons {
+    margin-top: 10px;
     margin-bottom: 5px;
   }
 }
@@ -164,32 +170,36 @@ h1, h2, h3, h4, h5, h6 {
   cursor: pointer;
   border-bottom: 2px solid white;
 }
+
 #header Nav .active {
   border-bottom: 2px solid white;
 }
+
 .nav-buttons Button {
   font-weight: bold;
 }
 
 .navbar-toggler {
   text-decoration: none !important;
-  border:none !important;
+  border: none !important;
   font-weight: bold !important;
 }
-.navbar-toggler:hover{
+
+.navbar-toggler:hover {
   text-decoration: none !important;
-  border:none !important;
+  border: none !important;
   font-weight: bold !important;
 }
+
 /*--------------------------------------------------------------
 # Hero Section
 --------------------------------------------------------------*/
+
 #hero {
   width: 100%;
   background: #fafbfd top left;
   position: relative;
 }
-
 
 #hero .container {
   position: relative;
@@ -198,8 +208,8 @@ h1, h2, h3, h4, h5, h6 {
 
 @media (max-width: 700px) {
   #hero {
-    max-height:700px;
-    padding-bottom:0px;
+    max-height: 700px;
+    padding-bottom: 0px;
     margin-bottom: 0px;
   }
   #hero .container {
@@ -208,7 +218,7 @@ h1, h2, h3, h4, h5, h6 {
     margin-top: 0px;
     margin-bottom: 0px;
   }
-  #hero .container .col{
+  #hero .container .col {
     margin-top: 50px;
   }
 }
@@ -312,6 +322,7 @@ h1, h2, h3, h4, h5, h6 {
 /*--------------------------------------------------------------
 # Sections General
 --------------------------------------------------------------*/
+
 section {
   padding: 60px 0;
   overflow: hidden;
@@ -363,6 +374,7 @@ section {
 /*--------------------------------------------------------------
 # Breadcrumbs
 --------------------------------------------------------------*/
+
 .breadcrumbs {
   padding: 20px 0;
   background-color: #f1f6fe;
@@ -397,11 +409,11 @@ section {
   font-size: 14px;
 }
 
-.breadcrumbs ol li + li {
+.breadcrumbs ol li+li {
   padding-left: 10px;
 }
 
-.breadcrumbs ol li + li::before {
+.breadcrumbs ol li+li::before {
   display: inline-block;
   padding-right: 10px;
   color: #6c757d;
@@ -423,6 +435,7 @@ section {
 /*--------------------------------------------------------------
 # Featured Services
 --------------------------------------------------------------*/
+
 .featured-services .icon-box {
   padding: 30px;
   position: relative;
@@ -469,7 +482,7 @@ section {
   font-size: 18px;
 }
 
-.featured-services .icon-box{
+.featured-services .icon-box {
   color: #111;
 }
 
@@ -479,7 +492,7 @@ section {
   margin-bottom: 0;
 }
 
-.featured-services .icon-box:hover > *{
+.featured-services .icon-box:hover>* {
   color: #fff;
 }
 
@@ -490,6 +503,7 @@ section {
 /*--------------------------------------------------------------
 # About
 --------------------------------------------------------------*/
+
 .about .content h3 {
   font-weight: 600;
   font-size: 26px;
@@ -533,10 +547,10 @@ section {
   margin-bottom: 0;
 }
 
-
 /*--------------------------------------------------------------
 # Frequently Asked Questions
 --------------------------------------------------------------*/
+
 .faq {
   padding: 60px 0;
 }
@@ -544,6 +558,12 @@ section {
 .faq .faq-list {
   padding: 0;
   list-style: none;
+}
+
+.faq-list .btn-link {
+  color: #343a40!important;
+  text-decoration: none !important;
+  font-size: 18px;
 }
 
 .faq .faq-list li {
@@ -558,37 +578,16 @@ section {
   font-weight: 500;
 }
 
-.faq .faq-list i {
-  font-size: 18px;
-  position: absolute;
-  left: -25px;
-  top: 6px;
-}
-
 .faq .faq-list p {
-  margin-bottom: 20px;
+  margin-bottom: 10px;
+  padding: 6px 20px !important;
   font-size: 15px;
-}
-
-.faq .faq-list a.collapse {
-  color: #106eea;
-}
-
-.faq .faq-list a.collapsed {
-  color: #343a40;
-}
-
-.faq .faq-list a.collapsed:hover {
-  color: #106eea;
-}
-
-.faq .faq-list a.collapsed i::before {
-  content: "\eab2" !important;
 }
 
 /*--------------------------------------------------------------
 # Contact
 --------------------------------------------------------------*/
+
 .contact .info-box {
   color: #444444;
   text-align: center;
@@ -640,7 +639,7 @@ section {
   font-weight: 600;
 }
 
-.contact .email-contact-form .error-message br + br {
+.contact .email-contact-form .error-message br+br {
   margin-top: 25px;
 }
 
@@ -725,6 +724,7 @@ section {
 /*--------------------------------------------------------------
 # Footer
 --------------------------------------------------------------*/
+
 #footer {
   background: #f6f9fe;
   color: #444444;
@@ -835,21 +835,23 @@ section {
     text-align: center;
     padding: 2px 0;
   }
-}      
-
+}
 
 /* Login and sign up */
+
 /* .modal  {
   display: flex !important;
   justify-content: center !important;
   align-items: center !important;
   font-family: sans-serif,'Oswald','Segoe UI'!important;
 } */
+
 /* .modal-dialog {
   width: 100% !important;
 } */
-@media screen and (max-width:768px){
-  .modal-body{
+
+@media screen and (max-width:768px) {
+  .modal-body {
     padding: 40px 40px !important;
   }
   .modal {
@@ -861,15 +863,18 @@ section {
     width: 100% !important;
   }
 }
+
 .modal-content {
   border-radius: 0px !important;
 }
+
 /* .auth-inner {
   display: flex;
   justify-content: center;
   flex-direction: column;
   text-align: left;
 } */
+
 .auth-inner {
   width: 100%;
   margin: auto;
@@ -889,64 +894,76 @@ section {
   font-weight: 400;
 }
 
-.forgot-password,
-.forgot-password a {
+.forgot-password, .forgot-password a {
   text-align: right;
   font-size: 13px;
   padding-top: 10px;
   color: #7f7d7d;
   margin: 0;
 }
-.or-signin:hover{
-  cursor:pointer !important;
+
+.or-signin:hover {
+  cursor: pointer !important;
 }
+
 .forgot-password a {
   color: #167bff;
 }
+
 #loginSignUp .form-control {
-	border-radius: 3px;
-	background-color: rgba(0, 0, 0, 0.055);
-	box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset;
+  border-radius: 3px;
+  background-color: rgba(0, 0, 0, 0.055);
+  box-shadow: 0 1px 0px 0px rgba(0, 0, 0, 0.09) inset;
 }
+
 #loginSignUp .form-control:hover {
-	background-color: rgba(0, 0, 0, .16);
+  background-color: rgba(0, 0, 0, .16);
 }
+
 #loginSignUp .form-control:focus {
-	box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
-	background-color: rgba(0, 0, 0, 0.23);
+  box-shadow: 0 1px 0 0 rgba(0, 0, 0, 0.04) inset;
+  background-color: rgba(0, 0, 0, 0.23);
 }
+
 #loginSignUp .nav-tabs a {
-	background-color: #e9ebee;
-	color: #888;
-	border-radius: 0px;
+  background-color: #e9ebee;
+  color: #888;
+  border-radius: 0px;
 }
+
 #loginSignUp .nav-tabs a:hover {
-	color:#555 !important;
+  color: #555 !important;
 }
+
 #loginSignUp .nav-tabs a.active {
-	color: #000 !important;
-	background-color: white;
+  color: #000 !important;
+  background-color: white;
 }
-#loginSignUp .form-control  {
-	border-radius: 3px;
-	border: none;
-	color: #333333;
-	font-size: 16px;
-	height: 46px;
-	margin-bottom: 5px;
-	padding: 13px 12px;
-	width: 100%;
+
+#loginSignUp .form-control {
+  border-radius: 3px;
+  border: none;
+  color: #333333;
+  font-size: 16px;
+  height: 46px;
+  margin-bottom: 5px;
+  padding: 13px 12px;
+  width: 100%;
 }
+
 #loginSignUp select.form-control {
-	padding: 10px 12px;
+  padding: 10px 12px;
 }
+
 #loginSignUp .form-group label {
-	font-size: 16px;
+  font-size: 16px;
 }
+
 #loginSignUp .tab-content {
-	padding-left: 10px;
-	padding-right: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
-#loginSignUp .modal-content ,#loginSignUp button {
-	border-radius: 0px;
+
+#loginSignUp .modal-content, #loginSignUp button {
+  border-radius: 0px;
 }

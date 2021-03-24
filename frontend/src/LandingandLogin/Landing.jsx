@@ -4,9 +4,10 @@ import { Watch } from 'scrollmonitor-react';
 import '../assets/css/style.css';
 import '../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
-import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
+import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
 import axios from 'axios';
 import auth from "./auth";
+import { Accordion, Card, Button } from 'react-bootstrap';
 export default Watch(
   class Landing extends Component {
     constructor(props) {
@@ -38,35 +39,12 @@ export default Watch(
       this.handleLoginChange = this.handleLoginChange.bind(this);
       this.handleSignUpChange = this.handleSignUpChange.bind(this);
     }
-    toggleNavbar() {
-      this.setState({
-        isNavOpen: !this.state.isNavOpen
-      });
-    }
-    toggleModal() {
-      this.setState({
-        isModalOpen: !this.state.isModalOpen,
-        activeTab: "1"
-      });
-    }
-    setActiveTab(selectedTab) {
-      this.setState({
-        activeTab: selectedTab
-      });
-    }
-    scrollToTop = () => {
-      scroll.scrollToTop();
-    };
-    componentDidMount() {
-      this.aos = AOS;
-      this.aos.init({
-        duration: 1000,
-        once: true
-      });
-    }
-    componentDidUpdate() {
-      this.aos.refresh();
-    }
+    toggleNavbar() { this.setState({ isNavOpen: !this.state.isNavOpen }); }
+    toggleModal() { this.setState({ isModalOpen: !this.state.isModalOpen, activeTab: "1" }); }
+    setActiveTab(selectedTab) { this.setState({ activeTab: selectedTab }); }
+    scrollToTop = () => { scroll.scrollToTop(); };
+    componentDidMount() { this.aos = AOS; this.aos.init({ duration: 1000, once: true }); }
+    componentDidUpdate() { this.aos.refresh(); }
     handleLoginChange(event) {
       const target = event.target;
       const value = (target.type === 'checkbox') ? target.checked : target.value;
@@ -115,6 +93,7 @@ export default Watch(
         })
       alert("SignUp: " + JSON.stringify(signUpData));
     }
+
     render() {
       return (
         <div className="">
@@ -173,7 +152,7 @@ export default Watch(
                     </Nav>
                     <Nav className="ml-0 ml-md-2 d-flex align-items-center" navbar>
                       <NavItem className="nav-buttons">
-                        <Button color="light" onClick={this.toggleModal}>Login</Button>
+                        <button className="btn btn-light" onClick={this.toggleModal}>Login</button>
                       </NavItem>
                     </Nav>
                   </Collapse>
@@ -353,49 +332,60 @@ export default Watch(
                   <p>Facing any query, get it resolved here.</p>
                 </div>
                 <ul className="faq-list" data-aos="fade-up" data-aos-delay="100">
-                  <li>
-                    <a data-toggle="collapse" className="text-dark" href="#faq1"> Is this platform just for students?<i
-                      className="icofont-simple-up"></i></a>
-                    <div id="faq1" className="collapse show" data-parent=".faq-list">
-                      <p>
-                        This platform is open for any coding enthusiast.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq2" className="text-dark collapsed"> How to earn coins through problems and contests? <i className="icofont-simple-up"></i></a>
-                    <div id="faq2" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Each problem in our practice section is associated with a certain number of coins which you gain after solving it. Also
-                        our contests provide you coins on the basis of your rank.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq3" className="text-dark collapsed"> How and where to redeem coins ? <i className="icofont-simple-up"></i></a>
-                    <div id="faq3" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Our merchandise store provides you a way to redeem your coins to buy some exclusive products. You can also avail heavy
-                        discounts using the coins.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq4" className="text-dark collapsed"> Where can I find my collected coins?<i className="icofont-simple-up"></i></a>
-                    <div id="faq4" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Once you create your profile, you can find your total collected coins.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq5" className="text-dark collapsed"> Still didn’t answer your question? <i className="icofont-simple-up"></i></a>
-                    <div id="faq5" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Contact us at any Social Media or through the form given below.
-                    </p>
-                    </div>
-                  </li>
+                  <Accordion defaultActiveKey="0">
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="0">
+                        Is this platform just for students?
+                      </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="0">
+                        <p>This platform is open for any coding enthusiast.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="1">
+                          How to earn coins through problems and contests?
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="1">
+                        <p>Each problem in our practice section is associated with a certain number of coins which you gain after solving it. Also
+                        our contests provide you coins on the basis of your rank.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="2">
+                          How and where to redeem coins ? 
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="2">
+                        <p>Our merchandise store provides you a way to redeem your coins to buy some exclusive products. You can also avail heavy
+                        discounts using the coins.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="3">
+                          Where can I find my collected coins?
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="3">
+                        <p>Once you create your profile, you can find your total collected coins.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="4">
+                          Still didn’t answer your question? 
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="4">
+                        <p>Contact us at any Social Media or through the form given below.</p>
+                      </Accordion.Collapse>
+                    </li>
+                  </Accordion>
                 </ul>
               </div>
             </section>
@@ -407,67 +397,67 @@ export default Watch(
                 </div>
                 <div className="row" data-aos="fade-up" data-aos-delay="100">
                   <div className="col-12 col-md-6">
-                  <div className="row" data-aos="fade-up" data-aos-delay="100">
-                    <div className="col-12">
-                      <div className="info-box mb-4">
-                        <i className="bx bx-map"></i>
-                        <h3>Our Address</h3>
-                        <p>A108 Adam Street, New York, NY 535022</p>
+                    <div className="row" data-aos="fade-up" data-aos-delay="100">
+                      <div className="col-12">
+                        <div className="info-box mb-4">
+                          <i className="bx bx-map"></i>
+                          <h3>Our Address</h3>
+                          <p>A108 Adam Street, New York, NY 535022</p>
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-md-12">
+                        <div className="info-box  mb-4">
+                          <i className="bx bx-envelope"></i>
+                          <h3>Email Us</h3>
+                          <p>contact@example.com</p>
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-md-12">
+                        <div className="info-box  mb-4">
+                          <i className="bx bx-phone-call"></i>
+                          <h3>Call Us</h3>
+                          <p>+1 5589 55488 55</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-12">
-                      <div className="info-box  mb-4">
-                        <i className="bx bx-envelope"></i>
-                        <h3>Email Us</h3>
-                        <p>contact@example.com</p>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-12">
-                      <div className="info-box  mb-4">
-                        <i className="bx bx-phone-call"></i>
-                        <h3>Call Us</h3>
-                        <p>+1 5589 55488 55</p>
-                      </div>
-                    </div>
-                  </div>
                   </div>
                   <div className="col-12 col-md-6">
-                  <div className="row d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
-                    <div className="col-12">
-                      <form action="" method="post" role="form" className="email-contact-form">
-                        <div className="form-row">
-                          <div className="col form-group">
-                            <input type="text" name="name" className="form-control" id="name" placeholder="Your Name"
-                              data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                    <div className="row d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                      <div className="col-12">
+                        <form action="" method="post" role="form" className="email-contact-form">
+                          <div className="form-row">
+                            <div className="col form-group">
+                              <input type="text" name="name" className="form-control" id="name" placeholder="Your Name"
+                                data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                              <div className="validate"></div>
+                            </div>
+                            <div className="col form-group">
+                              <input type="email" className="form-control" name="email" id="email" placeholder="Your Email"
+                                data-rule="email" data-msg="Please enter a valid email" />
+                              <div className="validate"></div>
+                            </div>
+                          </div>
+                          <div className="form-group">
+                            <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject"
+                              data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
                             <div className="validate"></div>
                           </div>
-                          <div className="col form-group">
-                            <input type="email" className="form-control" name="email" id="email" placeholder="Your Email"
-                              data-rule="email" data-msg="Please enter a valid email" />
+                          <div className="form-group">
+                            <textarea className="form-control" name="message" rows="5" data-rule="required"
+                              data-msg="Please write something for us" placeholder="Message"></textarea>
                             <div className="validate"></div>
                           </div>
-                        </div>
-                        <div className="form-group">
-                          <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject"
-                            data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                          <div className="validate"></div>
-                        </div>
-                        <div className="form-group">
-                          <textarea className="form-control" name="message" rows="5" data-rule="required"
-                            data-msg="Please write something for us" placeholder="Message"></textarea>
-                          <div className="validate"></div>
-                        </div>
-                        <div className="mb-3">
-                          <div className="loading">Loading</div>
-                          <div className="error-message"></div>
-                          <div className="sent-message">Your message has been sent. Thank you!</div>
-                        </div>
-                        <div className="text-center"><button style={{ cursor: "pointer" }} type="submit">Send Message</button></div>
-                      </form>
+                          <div className="mb-3">
+                            <div className="loading">Loading</div>
+                            <div className="error-message"></div>
+                            <div className="sent-message">Your message has been sent. Thank you!</div>
+                          </div>
+                          <div className="text-center"><button style={{ cursor: "pointer" }} type="submit">Send Message</button></div>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                  </div>
-                  </div>
+                </div>
               </div>
             </section>
           </main>
@@ -506,7 +496,8 @@ export default Watch(
                             smooth={true}
                             offset={-70}
                             duration={500}>About us
-                        </Link></a>
+                        </Link>
+                        </a>
                       </li>
                       <li><i className="bx bx-chevron-right"></i>
                         <a href="">
