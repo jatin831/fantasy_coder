@@ -7,7 +7,7 @@ import { Link, animateScroll as scroll } from "react-scroll";
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
 import axios from 'axios';
 import auth from "./auth";
-import { Accordion,Button } from 'react-bootstrap';
+import { Accordion, Button } from 'react-bootstrap';
 
 
 export default Watch(
@@ -24,12 +24,12 @@ export default Watch(
           "remember": false
         },
         userSignUp: {
-          "firstname": '',
-          "lastname": '',
+          "fname": '',
+          "lname": '',
           "username": '',
-          "email": '',
+          "email_id": '',
           "password": '',
-          "cnfPassword": '',
+          "cPassword": '',
         },
       }
       this.toggleNavbar = this.toggleNavbar.bind(this);
@@ -79,11 +79,13 @@ export default Watch(
         .then(res => {
           console.log(res);
           console.log(res.data);
+          if (res.data.status === 200) {
+            auth.login(() => {
+              this.props.history.push("/user");
+            });
+          }
         });
-      auth.login(() => {
-        this.props.history.push("/user");
-      });
-      // alert("Login: " + JSON.stringify(this.state.userLogin));
+      alert("Login: " + JSON.stringify(this.state.userLogin));
     }
     handleSignUpSubmit(event) {
       event.preventDefault();
@@ -205,11 +207,11 @@ export default Watch(
                     <form onSubmit={this.handleSignUpSubmit}>
                       <div className="form-group">
                         <label className="font-weight-bold">First name</label>
-                        <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" value={this.state.userSignUp.firstname} onChange={this.handleSignUpChange} />
+                        <input type="text" id="fname" name="fname" className="form-control" placeholder="First name" value={this.state.userSignUp.firstname} onChange={this.handleSignUpChange} />
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Last name</label>
-                        <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" value={this.state.userSignUp.lastname} onChange={this.handleSignUpChange} />
+                        <input type="text" id="lname" name="lname" className="form-control" placeholder="Last name" value={this.state.userSignUp.lastname} onChange={this.handleSignUpChange} />
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">User name</label>
@@ -217,7 +219,7 @@ export default Watch(
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Email address</label>
-                        <input type="email" name="email" className="form-control" placeholder="Enter email" value={this.state.userSignUp.email} onChange={this.handleSignUpChange} />
+                        <input type="email" name="email_id" className="form-control" placeholder="Enter email" value={this.state.userSignUp.email} onChange={this.handleSignUpChange} />
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Password</label>
@@ -225,7 +227,7 @@ export default Watch(
                       </div>
                       <div className="form-group">
                         <label className="font-weight-bold">Confirm Password</label>
-                        <input type="password" name="cnfPassword" className="form-control" placeholder="Confirm password" value={this.state.userSignUp.cnfPassword} onChange={this.handleSignUpChange} />
+                        <input type="password" name="cPassword" className="form-control" placeholder="Confirm password" value={this.state.userSignUp.cnfPassword} onChange={this.handleSignUpChange} />
                       </div>
                       <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                       <p className="forgot-password text-right">
@@ -338,7 +340,7 @@ export default Watch(
                     <li>
                       <div>
                         <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="0">
-                        Is this platform just for students?
+                          Is this platform just for students?
                       </Accordion.Toggle>
                       </div>
                       <Accordion.Collapse eventKey="0">
@@ -359,7 +361,7 @@ export default Watch(
                     <li>
                       <div>
                         <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="2">
-                          How and where to redeem coins ? 
+                          How and where to redeem coins ?
                         </Accordion.Toggle>
                       </div>
                       <Accordion.Collapse eventKey="2">
@@ -380,7 +382,7 @@ export default Watch(
                     <li>
                       <div>
                         <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="4">
-                          Still didn’t answer your question? 
+                          Still didn’t answer your question?
                         </Accordion.Toggle>
                       </div>
                       <Accordion.Collapse eventKey="4">
