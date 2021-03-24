@@ -1,13 +1,15 @@
 import React, { Component } from 'react';
 import AOS from 'aos';
 import { Watch } from 'scrollmonitor-react';
-import '../assets/css/style.css';
-import '../assets/vendor/icofont/icofont.min.css';
+import '../../assets/css/style.css';
+import '../../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
 import axios from 'axios';
 import auth from "./auth";
-import { Accordion, Card, Button } from 'react-bootstrap';
+import { Accordion,Button } from 'react-bootstrap';
+
+
 export default Watch(
   class Landing extends Component {
     constructor(props) {
@@ -79,9 +81,9 @@ export default Watch(
           console.log(res.data);
         });
       auth.login(() => {
-        this.props.history.push("/contests");
+        this.props.history.push("/user");
       });
-      alert("Login: " + JSON.stringify(this.state.userLogin));
+      // alert("Login: " + JSON.stringify(this.state.userLogin));
     }
     handleSignUpSubmit(event) {
       event.preventDefault();
