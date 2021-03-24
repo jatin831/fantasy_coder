@@ -6,7 +6,7 @@ import '../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
 import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
 import axios from 'axios';
-
+import auth from "./auth";
 export default Watch(
   class Landing extends Component {
     constructor(props) {
@@ -99,7 +99,10 @@ export default Watch(
         .then(res => {
           console.log(res);
           console.log(res.data);
-        })
+        });
+      auth.login(() => {
+        this.props.history.push("/contests");
+      });
       alert("Login: " + JSON.stringify(this.state.userLogin));
     }
     handleSignUpSubmit(event) {

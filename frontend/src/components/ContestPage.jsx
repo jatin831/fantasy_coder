@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-class contests extends Component {
+class Contests extends Component {
   state = {  }
   render() { 
     return (
-      <h1>Contest Page</h1>
+      <h3 className="text-dark">Contest Page</h3>
     );
   }
 }
 
-export default contests;
+export default Contests;
