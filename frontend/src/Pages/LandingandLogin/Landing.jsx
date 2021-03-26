@@ -112,7 +112,7 @@ export default Watch(
     handleLoginSubmit(event) {
       event.preventDefault();
       const loginData = this.state.userLogin;
-      axios.post(`https://jsonplaceholder.typicode.com/users`, loginData)
+      axios.post(`http://104.211.91.225:5000/login`, loginData)
         .then(res => {
           console.log(res);
           console.log(res.data);
@@ -121,18 +121,27 @@ export default Watch(
               this.props.history.push("/user");
             });
           }
+          else {
+            alert("Invalid Credentials");
+          }
         });
-      alert("Login: " + JSON.stringify(this.state.userLogin));
+      // alert("Login: " + JSON.stringify(this.state.userLogin));
     }
     handleSignUpSubmit(event) {
       event.preventDefault();
       const signUpData = this.state.userSignUp;
-      axios.post(`https://jsonplaceholder.typicode.com/users`, signUpData)
+      axios.post(`http://104.211.91.225:5000/register`, signUpData)
         .then(res => {
           console.log(res);
           console.log(res.data);
+          if (res.data.status === 200) {
+            alert("Registered Successfully.")
+          }
+          else {
+            alert(res.data.msg);
+          }
         })
-      alert("SignUp: " + JSON.stringify(signUpData));
+      // alert("SignUp: " + JSON.stringify(signUpData));
     }
 
     render() {
