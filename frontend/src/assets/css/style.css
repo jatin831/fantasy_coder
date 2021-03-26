@@ -901,7 +901,9 @@ section {
   color: #7f7d7d;
   margin: 0;
 }
-
+.invalid-feedback{
+  display: contents !important;
+}
 .or-signin:hover {
   cursor: pointer !important;
 }
