@@ -18,6 +18,8 @@ export default Watch(
         isNavOpen: false,
         isModalOpen: false,
         activeTab: "1",
+        loginError: "",
+        signUpError: "",
         userLogin: {
           "username": '',
           "password": '',
@@ -55,7 +57,7 @@ export default Watch(
     scrollToTop = () => { scroll.scrollToTop(); };
     componentDidMount() { this.aos = AOS; this.aos.init({ duration: 1000, once: true }); }
     componentDidUpdate() { this.aos.refresh(); }
-    
+
     handleBlur = (field) => (event) => {
       this.setState({
         touched: { ...this.state.touched, [field]: true }
@@ -70,16 +72,16 @@ export default Watch(
       };
       if (this.state.touched.username && username.length < 3)
         errors.username = 'Username should be greater than 3 characters long';
-  
+
       const regex_email = /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$/;
       if (this.state.touched.email_id && !regex_email.test(email_id))
         errors.email_id = 'Enter a valid email address';
-      
+
       const regex_pass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$/;
       if (this.state.touched.password && !regex_pass.test(password))
         errors.password = 'Password must have at least 1 number 1 uppercase and lowercase character, 1 special symbol and between 8 to 20 characters';
-      
-      if (this.state.touched.password && !(password===cpassword))
+
+      if (this.state.touched.cpassword && !(password === cpassword))
         errors.cpassword = 'Passwords don\'t match';
 
       return errors;
@@ -96,6 +98,7 @@ export default Watch(
         }
       });
     }
+
     handleSignUpChange(event) {
       const target = event.target;
       const value = (target.type === 'checkbox') ? target.checked : target.value;
@@ -109,39 +112,45 @@ export default Watch(
       });
     }
 
-    handleLoginSubmit(event) {
+    // Handling log in through Async await 
+    handleLoginSubmit = (event) => {
       event.preventDefault();
       const loginData = this.state.userLogin;
-      axios.post(`http://104.211.91.225:5000/login`, loginData)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
+      const sendPostRequest = async () => {
+        try {
+          const res = await axios.post(`http://104.211.91.225:5000/login`, loginData);
           if (res.data.status === 200) {
             auth.login(() => {
               this.props.history.push("/user");
             });
           }
           else {
-            alert("Invalid Credentials");
+            this.setState({ loginError : "Invalid username or password!!" });
           }
-        });
-      // alert("Login: " + JSON.stringify(this.state.userLogin));
+        } catch (err) {
+          this.setState({ loginError: "Error : Please, try again later!!" });
+        }
+      };
+      sendPostRequest();
     }
+    // Handling sign up through Async await 
     handleSignUpSubmit(event) {
       event.preventDefault();
       const signUpData = this.state.userSignUp;
-      axios.post(`http://104.211.91.225:5000/register`, signUpData)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
+      const sendPostRequest = async () => {
+        try {
+          const res = await axios.post(`http://104.211.91.225:5000/register`, signUpData);
           if (res.data.status === 200) {
-            alert("Registered Successfully.")
+            this.props.history.push("/user");
           }
           else {
-            alert(res.data.msg);
+            this.setState({ signUpError: res.data.msg });
           }
-        })
-      // alert("SignUp: " + JSON.stringify(signUpData));
+        } catch (err) {
+          this.setState({ signUpError: "Error : Please, try again later!!" });
+        }
+      };
+      sendPostRequest();
     }
 
     render() {
@@ -210,7 +219,6 @@ export default Watch(
                 </div>
               </Navbar>
             </div>
-            
             {/* Login and Sign Up Modal*/}
             <Modal id="loginSignUp" isOpen={this.state.isModalOpen} toggle={this.toggleModal} className="login">
               <ModalBody className="auth-inner pt-5">
@@ -230,7 +238,6 @@ export default Watch(
                   <TabPane tabId="1">
                     {/* SIGN IN */}
                     <Form onSubmit={this.handleLoginSubmit}>
-                      <FormFeedback>{ }</FormFeedback>
                       <FormGroup>
                         <Label className="font-weight-bold">Username or Email</Label>
                         <Input type="text" name="username" className="form-control" placeholder="Enter username or email" value={this.state.userLogin.email} onChange={this.handleLoginChange} required />
@@ -245,10 +252,14 @@ export default Watch(
                           <Label className="custom-control-label" htmlFor="remember" >Remember me</Label>
                         </div>
                       </FormGroup>
+                      <FormGroup>
+                        <FormFeedback className="d-block">{this.state.loginError}</FormFeedback>
+                      </FormGroup>
                       <button type="submit" className="btn btn-primary btn-block">Login</button>
                       <p className="forgot-password text-right">
                         <a href="#">Forgot password?</a>
                       </p>
+                      
                     </Form>
                   </TabPane>
                   <TabPane tabId="2">
@@ -289,6 +300,9 @@ export default Watch(
                           onBlur={this.handleBlur('cpassword')} valid={errors.cpassword === ''} invalid={errors.cpassword !== ''}
                         />
                         <FormFeedback>{errors.cpassword}</FormFeedback>
+                      </FormGroup>
+                      <FormGroup>
+                        <FormFeedback className="d-block">{this.state.signUpError}</FormFeedback>
                       </FormGroup>
                       <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                       <p className="forgot-password text-right">
