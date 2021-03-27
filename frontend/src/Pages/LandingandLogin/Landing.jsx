@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import AOS from 'aos';
 import { Watch } from 'scrollmonitor-react';
-import '../assets/css/style.css';
-import '../assets/vendor/icofont/icofont.min.css';
+import '../../assets/css/style.css';
+import '../../assets/vendor/icofont/icofont.min.css';
 import { Link, animateScroll as scroll } from "react-scroll";
-import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Button, Modal, ModalBody, NavLink, TabContent, TabPane } from "reactstrap";
+import { Navbar, NavbarBrand, Nav, NavbarToggler, NavItem, Collapse, Modal, ModalBody, NavLink, TabContent, TabPane, Form, FormGroup, Label, Input, FormFeedback } from "reactstrap";
 import axios from 'axios';
+import auth from "./auth";
+import { Accordion, Button } from 'react-bootstrap';
+
 
 export default Watch(
   class Landing extends Component {
@@ -15,19 +18,27 @@ export default Watch(
         isNavOpen: false,
         isModalOpen: false,
         activeTab: "1",
+        loginError: "",
+        signUpError: "",
         userLogin: {
           "username": '',
           "password": '',
           "remember": false
         },
         userSignUp: {
-          "firstname": '',
-          "lastname": '',
+          "fname": '',
+          "lname": '',
           "username": '',
-          "email": '',
+          "email_id": '',
           "password": '',
-          "cnfPassword": '',
+          "cpassword": '',
         },
+        touched: {
+          username: '',
+          email_id: '',
+          password: '',
+          cpassword: '',
+        }
       }
       this.toggleNavbar = this.toggleNavbar.bind(this);
       this.scrollToTop = this.scrollToTop.bind(this);
@@ -37,35 +48,43 @@ export default Watch(
       this.handleSignUpSubmit = this.handleSignUpSubmit.bind(this);
       this.handleLoginChange = this.handleLoginChange.bind(this);
       this.handleSignUpChange = this.handleSignUpChange.bind(this);
+      this.validate = this.validate.bind(this);
+      this.handleBlur = this.handleBlur.bind(this);
     }
-    toggleNavbar() {
+    toggleNavbar() { this.setState({ isNavOpen: !this.state.isNavOpen }); }
+    toggleModal() { this.setState({ isModalOpen: !this.state.isModalOpen, activeTab: "1" }); }
+    setActiveTab(selectedTab) { this.setState({ activeTab: selectedTab }); }
+    scrollToTop = () => { scroll.scrollToTop(); };
+    componentDidMount() { this.aos = AOS; this.aos.init({ duration: 1000, once: true }); }
+    componentDidUpdate() { this.aos.refresh(); }
+
+    handleBlur = (field) => (event) => {
       this.setState({
-        isNavOpen: !this.state.isNavOpen
+        touched: { ...this.state.touched, [field]: true }
       });
     }
-    toggleModal() {
-      this.setState({
-        isModalOpen: !this.state.isModalOpen,
-        activeTab: "1"
-      });
-    }
-    setActiveTab(selectedTab) {
-      this.setState({
-        activeTab: selectedTab
-      });
-    }
-    scrollToTop = () => {
-      scroll.scrollToTop();
-    };
-    componentDidMount() {
-      this.aos = AOS;
-      this.aos.init({
-        duration: 1000,
-        once: true
-      });
-    }
-    componentDidUpdate() {
-      this.aos.refresh();
+    validate(username, email_id, password, cpassword) {
+      const errors = {
+        username: '',
+        email_id: '',
+        password: '',
+        cpassword: ''
+      };
+      if (this.state.touched.username && username.length < 3)
+        errors.username = 'Username should be greater than 3 characters long';
+
+      const regex_email = /^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w+$/;
+      if (this.state.touched.email_id && !regex_email.test(email_id))
+        errors.email_id = 'Enter a valid email address';
+
+      const regex_pass = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!#%*?&]{8,20}$/;
+      if (this.state.touched.password && !regex_pass.test(password))
+        errors.password = 'Password must have at least 1 number 1 uppercase and lowercase character, 1 special symbol and between 8 to 20 characters';
+
+      if (this.state.touched.cpassword && !(password === cpassword))
+        errors.cpassword = 'Passwords don\'t match';
+
+      return errors;
     }
     handleLoginChange(event) {
       const target = event.target;
@@ -79,6 +98,7 @@ export default Watch(
         }
       });
     }
+
     handleSignUpChange(event) {
       const target = event.target;
       const value = (target.type === 'checkbox') ? target.checked : target.value;
@@ -92,27 +112,49 @@ export default Watch(
       });
     }
 
-    handleLoginSubmit(event) {
+    // Handling log in through Async await 
+    handleLoginSubmit = (event) => {
       event.preventDefault();
       const loginData = this.state.userLogin;
-      axios.post(`https://jsonplaceholder.typicode.com/users`, loginData)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-      alert("Login: " + JSON.stringify(this.state.userLogin));
+      const sendPostRequest = async () => {
+        try {
+          const res = await axios.post(`http://104.211.91.225:5000/login`, loginData);
+          if (res.data.status === 200) {
+            auth.login(() => {
+              this.props.history.push("/user");
+            });
+          }
+          else {
+            this.setState({ loginError : "Invalid username or password!!" });
+          }
+        } catch (err) {
+          this.setState({ loginError: "Error : Please, try again later!!" });
+        }
+      };
+      sendPostRequest();
     }
+    // Handling sign up through Async await 
     handleSignUpSubmit(event) {
       event.preventDefault();
       const signUpData = this.state.userSignUp;
-      axios.post(`https://jsonplaceholder.typicode.com/users`, signUpData)
-        .then(res => {
-          console.log(res);
-          console.log(res.data);
-        })
-      alert("SignUp: " + JSON.stringify(signUpData));
+      const sendPostRequest = async () => {
+        try {
+          const res = await axios.post(`http://104.211.91.225:5000/register`, signUpData);
+          if (res.data.status === 200) {
+            this.props.history.push("/user");
+          }
+          else {
+            this.setState({ signUpError: res.data.msg });
+          }
+        } catch (err) {
+          this.setState({ signUpError: "Error : Please, try again later!!" });
+        }
+      };
+      sendPostRequest();
     }
+
     render() {
+      const errors = this.validate(this.state.userSignUp.username, this.state.userSignUp.email_id, this.state.userSignUp.password, this.state.userSignUp.cpassword);
       return (
         <div className="">
           <header id="header" className="fixed-top">
@@ -170,7 +212,7 @@ export default Watch(
                     </Nav>
                     <Nav className="ml-0 ml-md-2 d-flex align-items-center" navbar>
                       <NavItem className="nav-buttons">
-                        <Button color="light" onClick={this.toggleModal}>Login</Button>
+                        <button className="btn btn-light" onClick={this.toggleModal}>Login</button>
                       </NavItem>
                     </Nav>
                   </Collapse>
@@ -195,59 +237,78 @@ export default Watch(
                 <TabContent activeTab={this.state.activeTab} className="mt-4">
                   <TabPane tabId="1">
                     {/* SIGN IN */}
-                    <form onSubmit={this.handleLoginSubmit}>
-                      <div className="form-group">
-                        <label className="font-weight-bold">Username or Email</label>
-                        <input type="text" name="username" className="form-control" placeholder="Enter username or email" value={this.state.userLogin.email} onChange={this.handleLoginChange} required />
-                      </div>
-                      <div className="form-group">
-                        <label className="font-weight-bold">Password</label>
-                        <input type="password" id="password" name="password" className="form-control" placeholder="Enter password" value={this.state.userLogin.password} onChange={this.handleLoginChange} required />
-                      </div>
-                      <div className="form-group">
+                    <Form onSubmit={this.handleLoginSubmit}>
+                      <FormGroup>
+                        <Label className="font-weight-bold">Username or Email</Label>
+                        <Input type="text" name="username" className="form-control" placeholder="Enter username or email" value={this.state.userLogin.email} onChange={this.handleLoginChange} required />
+                      </FormGroup>
+                      <FormGroup>
+                        <Label className="font-weight-bold">Password</Label>
+                        <Input type="password" id="password" name="password" className="form-control" placeholder="Enter password" value={this.state.userLogin.password} onChange={this.handleLoginChange} required />
+                      </FormGroup>
+                      <FormGroup>
                         <div className="custom-control custom-checkbox">
-                          <input type="checkbox" className="custom-control-input" id="remember" name="remember" value={this.state.userLogin.remember} onChange={this.handleLoginChange} />
-                          <label className="custom-control-label" htmlFor="remember" >Remember me</label>
+                          <Input type="checkbox" className="custom-control-input" id="remember" name="remember" value={this.state.userLogin.remember} onChange={this.handleLoginChange} />
+                          <Label className="custom-control-label" htmlFor="remember" >Remember me</Label>
                         </div>
-                      </div>
+                      </FormGroup>
+                      <FormGroup>
+                        <FormFeedback className="d-block">{this.state.loginError}</FormFeedback>
+                      </FormGroup>
                       <button type="submit" className="btn btn-primary btn-block">Login</button>
                       <p className="forgot-password text-right">
                         <a href="#">Forgot password?</a>
                       </p>
-                    </form>
+                      
+                    </Form>
                   </TabPane>
                   <TabPane tabId="2">
                     {/* SIGN UP */}
-                    <form onSubmit={this.handleSignUpSubmit}>
-                      <div className="form-group">
+                    <Form onSubmit={this.handleSignUpSubmit}>
+                      <FormGroup>
                         <label className="font-weight-bold">First name</label>
-                        <input type="text" id="firstname" name="firstname" className="form-control" placeholder="First name" value={this.state.userSignUp.firstname} onChange={this.handleSignUpChange} />
-                      </div>
-                      <div className="form-group">
+                        <input type="text" id="fname" name="fname" className="form-control" placeholder="First name" value={this.state.userSignUp.firstname} onChange={this.handleSignUpChange} required />
+                      </FormGroup>
+                      <FormGroup>
                         <label className="font-weight-bold">Last name</label>
-                        <input type="text" id="lastname" name="lastname" className="form-control" placeholder="Last name" value={this.state.userSignUp.lastname} onChange={this.handleSignUpChange} />
-                      </div>
-                      <div className="form-group">
-                        <label className="font-weight-bold">User name</label>
-                        <input type="text" id="username" name="username" className="form-control" placeholder="User name" value={this.state.userSignUp.username} onChange={this.handleSignUpChange} />
-                      </div>
-                      <div className="form-group">
+                        <input type="text" id="lname" name="lname" className="form-control" placeholder="Last name" value={this.state.userSignUp.lastname} onChange={this.handleSignUpChange} required />
+                      </FormGroup>
+                      <FormGroup>
+                        <label className="font-weight-bold">Username</label>
+                        <input type="text" id="username" name="username" className="form-control" placeholder="User name" value={this.state.userSignUp.username} onChange={this.handleSignUpChange} required
+                          onBlur={this.handleBlur('username')} valid={errors.username === ''} invalid={errors.username !== ''}
+                        />
+                        <FormFeedback>{errors.username}</FormFeedback>
+                      </FormGroup>
+                      <FormGroup>
                         <label className="font-weight-bold">Email address</label>
-                        <input type="email" name="email" className="form-control" placeholder="Enter email" value={this.state.userSignUp.email} onChange={this.handleSignUpChange} />
-                      </div>
-                      <div className="form-group">
+                        <input type="email" name="email_id" className="form-control" placeholder="Enter email" value={this.state.userSignUp.email} onChange={this.handleSignUpChange} required
+                          onBlur={this.handleBlur('email_id')} valid={errors.email_id === ''} invalid={errors.email_id !== ''}
+                        />
+                        <FormFeedback>{errors.email_id}</FormFeedback>
+                      </FormGroup>
+                      <FormGroup>
                         <label className="font-weight-bold">Password</label>
-                        <input type="password" name="password" className="form-control" placeholder="Enter password" value={this.state.userSignUp.password} onChange={this.handleSignUpChange} />
-                      </div>
-                      <div className="form-group">
+                        <input type="password" name="password" className="form-control" placeholder="Enter password" value={this.state.userSignUp.password} onChange={this.handleSignUpChange} required
+                          onBlur={this.handleBlur('password')} valid={errors.password === ''} invalid={errors.password !== ''}
+                        />
+                        <FormFeedback>{errors.password}</FormFeedback>
+                      </FormGroup>
+                      <FormGroup>
                         <label className="font-weight-bold">Confirm Password</label>
-                        <input type="password" name="cnfPassword" className="form-control" placeholder="Confirm password" value={this.state.userSignUp.cnfPassword} onChange={this.handleSignUpChange} />
-                      </div>
+                        <input type="password" name="cpassword" className="form-control" placeholder="Confirm password" value={this.state.userSignUp.cnfPassword} onChange={this.handleSignUpChange} required
+                          onBlur={this.handleBlur('cpassword')} valid={errors.cpassword === ''} invalid={errors.cpassword !== ''}
+                        />
+                        <FormFeedback>{errors.cpassword}</FormFeedback>
+                      </FormGroup>
+                      <FormGroup>
+                        <FormFeedback className="d-block">{this.state.signUpError}</FormFeedback>
+                      </FormGroup>
                       <button type="submit" className="btn btn-primary btn-block">Sign Up</button>
                       <p className="forgot-password text-right">
                         Already registered <a className="or-signin" style={{ color: "#167BFF" }} onClick={() => this.setActiveTab('1')} >sign in?</a>
                       </p>
-                    </form>
+                    </Form>
                   </TabPane>
                 </TabContent>
               </ModalBody>
@@ -350,49 +411,60 @@ export default Watch(
                   <p>Facing any query, get it resolved here.</p>
                 </div>
                 <ul className="faq-list" data-aos="fade-up" data-aos-delay="100">
-                  <li>
-                    <a data-toggle="collapse" className="text-dark" href="#faq1"> Is this platform just for students?<i
-                      className="icofont-simple-up"></i></a>
-                    <div id="faq1" className="collapse show" data-parent=".faq-list">
-                      <p>
-                        This platform is open for any coding enthusiast.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq2" className="text-dark collapsed"> How to earn coins through problems and contests? <i className="icofont-simple-up"></i></a>
-                    <div id="faq2" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Each problem in our practice section is associated with a certain number of coins which you gain after solving it. Also
-                        our contests provide you coins on the basis of your rank.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq3" className="text-dark collapsed"> How and where to redeem coins ? <i className="icofont-simple-up"></i></a>
-                    <div id="faq3" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Our merchandise store provides you a way to redeem your coins to buy some exclusive products. You can also avail heavy
-                        discounts using the coins.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq4" className="text-dark collapsed"> Where can I find my collected coins?<i className="icofont-simple-up"></i></a>
-                    <div id="faq4" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Once you create your profile, you can find your total collected coins.
-                    </p>
-                    </div>
-                  </li>
-                  <li>
-                    <a data-toggle="collapse" href="#faq5" className="text-dark collapsed"> Still didn’t answer your question? <i className="icofont-simple-up"></i></a>
-                    <div id="faq5" className="collapse" data-parent=".faq-list">
-                      <p>
-                        Contact us at any Social Media or through the form given below.
-                    </p>
-                    </div>
-                  </li>
+                  <Accordion defaultActiveKey="0">
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="0">
+                          Is this platform just for students?
+                      </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="0">
+                        <p>This platform is open for any coding enthusiast.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="1">
+                          How to earn coins through problems and contests?
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="1">
+                        <p>Each problem in our practice section is associated with a certain number of coins which you gain after solving it. Also
+                        our contests provide you coins on the basis of your rank.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="2">
+                          How and where to redeem coins ?
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="2">
+                        <p>Our merchandise store provides you a way to redeem your coins to buy some exclusive products. You can also avail heavy
+                        discounts using the coins.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="3">
+                          Where can I find my collected coins?
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="3">
+                        <p>Once you create your profile, you can find your total collected coins.</p>
+                      </Accordion.Collapse>
+                    </li>
+                    <li>
+                      <div>
+                        <Accordion.Toggle as={Button} style={{ whiteSpace: "normal", textAlign: "left" }} variant="link" eventKey="4">
+                          Still didn’t answer your question?
+                        </Accordion.Toggle>
+                      </div>
+                      <Accordion.Collapse eventKey="4">
+                        <p>Contact us at any Social Media or through the form given below.</p>
+                      </Accordion.Collapse>
+                    </li>
+                  </Accordion>
                 </ul>
               </div>
             </section>
@@ -404,67 +476,67 @@ export default Watch(
                 </div>
                 <div className="row" data-aos="fade-up" data-aos-delay="100">
                   <div className="col-12 col-md-6">
-                  <div className="row" data-aos="fade-up" data-aos-delay="100">
-                    <div className="col-12">
-                      <div className="info-box mb-4">
-                        <i className="bx bx-map"></i>
-                        <h3>Our Address</h3>
-                        <p>A108 Adam Street, New York, NY 535022</p>
+                    <div className="row" data-aos="fade-up" data-aos-delay="100">
+                      <div className="col-12">
+                        <div className="info-box mb-4">
+                          <i className="bx bx-map"></i>
+                          <h3>Our Address</h3>
+                          <p>A108 Adam Street, New York, NY 535022</p>
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-md-12">
+                        <div className="info-box  mb-4">
+                          <i className="bx bx-envelope"></i>
+                          <h3>Email Us</h3>
+                          <p>contact@example.com</p>
+                        </div>
+                      </div>
+                      <div className="col-lg-6 col-md-12">
+                        <div className="info-box  mb-4">
+                          <i className="bx bx-phone-call"></i>
+                          <h3>Call Us</h3>
+                          <p>+1 5589 55488 55</p>
+                        </div>
                       </div>
                     </div>
-                    <div className="col-lg-6 col-md-12">
-                      <div className="info-box  mb-4">
-                        <i className="bx bx-envelope"></i>
-                        <h3>Email Us</h3>
-                        <p>contact@example.com</p>
-                      </div>
-                    </div>
-                    <div className="col-lg-6 col-md-12">
-                      <div className="info-box  mb-4">
-                        <i className="bx bx-phone-call"></i>
-                        <h3>Call Us</h3>
-                        <p>+1 5589 55488 55</p>
-                      </div>
-                    </div>
-                  </div>
                   </div>
                   <div className="col-12 col-md-6">
-                  <div className="row d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
-                    <div className="col-12">
-                      <form action="" method="post" role="form" className="email-contact-form">
-                        <div className="form-row">
-                          <div className="col form-group">
-                            <input type="text" name="name" className="form-control" id="name" placeholder="Your Name"
-                              data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                    <div className="row d-flex justify-content-center" data-aos="fade-up" data-aos-delay="100">
+                      <div className="col-12">
+                        <form action="" method="post" role="form" className="email-contact-form">
+                          <div className="form-row">
+                            <div className="col form-group">
+                              <input type="text" name="name" className="form-control" id="name" placeholder="Your Name"
+                                data-rule="minlen:4" data-msg="Please enter at least 4 chars" />
+                              <div className="validate"></div>
+                            </div>
+                            <div className="col form-group">
+                              <input type="email" className="form-control" name="email" id="email" placeholder="Your Email"
+                                data-rule="email" data-msg="Please enter a valid email" />
+                              <div className="validate"></div>
+                            </div>
+                          </div>
+                          <div className="form-group">
+                            <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject"
+                              data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
                             <div className="validate"></div>
                           </div>
-                          <div className="col form-group">
-                            <input type="email" className="form-control" name="email" id="email" placeholder="Your Email"
-                              data-rule="email" data-msg="Please enter a valid email" />
+                          <div className="form-group">
+                            <textarea className="form-control" name="message" rows="5" data-rule="required"
+                              data-msg="Please write something for us" placeholder="Message"></textarea>
                             <div className="validate"></div>
                           </div>
-                        </div>
-                        <div className="form-group">
-                          <input type="text" className="form-control" name="subject" id="subject" placeholder="Subject"
-                            data-rule="minlen:4" data-msg="Please enter at least 8 chars of subject" />
-                          <div className="validate"></div>
-                        </div>
-                        <div className="form-group">
-                          <textarea className="form-control" name="message" rows="5" data-rule="required"
-                            data-msg="Please write something for us" placeholder="Message"></textarea>
-                          <div className="validate"></div>
-                        </div>
-                        <div className="mb-3">
-                          <div className="loading">Loading</div>
-                          <div className="error-message"></div>
-                          <div className="sent-message">Your message has been sent. Thank you!</div>
-                        </div>
-                        <div className="text-center"><button style={{ cursor: "pointer" }} type="submit">Send Message</button></div>
-                      </form>
+                          <div className="mb-3">
+                            <div className="loading">Loading</div>
+                            <div className="error-message"></div>
+                            <div className="sent-message">Your message has been sent. Thank you!</div>
+                          </div>
+                          <div className="text-center"><button style={{ cursor: "pointer" }} type="submit">Send Message</button></div>
+                        </form>
+                      </div>
                     </div>
                   </div>
-                  </div>
-                  </div>
+                </div>
               </div>
             </section>
           </main>
@@ -503,7 +575,8 @@ export default Watch(
                             smooth={true}
                             offset={-70}
                             duration={500}>About us
-                        </Link></a>
+                        </Link>
+                        </a>
                       </li>
                       <li><i className="bx bx-chevron-right"></i>
                         <a href="">

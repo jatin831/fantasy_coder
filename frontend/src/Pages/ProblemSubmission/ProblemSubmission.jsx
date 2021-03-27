@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Editor from "./EditorComponent";
-import AceExample from "./AceComponent";
+import Editor from "../../components/EditorComponent";
+import AceExample from "../../components/AceComponent";
 import Problem from "../ProblemComponent";
 class Main extends Component {
   state = {  }
