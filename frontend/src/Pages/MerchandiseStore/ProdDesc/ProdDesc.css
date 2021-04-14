@@ -1,0 +1,188 @@
+.ProdDesc {
+    width: 100%;
+    height: 100%;
+    color: black;
+    padding: 0 0 60px 0;
+    margin: 0;
+}
+
+.ProdDesc .Header{
+    height: 100px;
+    padding: 0;
+    margin: 0;
+}
+
+.ProdDesc h6 a {
+    color: #8795A1;
+}
+
+.ProdDesc h6 a:hover {
+    color: inherit;
+}
+
+.ProdDesc .ProductImg {
+    width: 80%;
+    height: auto;
+    display: block;
+    margin: 0;
+}
+
+.ProdDesc .Description {
+    width: 100%;
+    padding-top: 10px;
+}
+
+.ProdDesc .CartBtn {
+    font-size: 24px;
+}
+
+.ProdDesc .ColorDesc {
+    display: inline-block;
+}
+
+.ProdDesc .ColorTray {
+    display: inline-block;
+    position: relative;
+}
+
+.ProdDesc .ProductColor {
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+    padding-top: 15px;
+    padding-bottom: 10px;
+    margin-top: 15px;
+}
+
+.ProdDesc .ColorText {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.ProdDesc .ColorName {
+    text-transform: capitalize;
+    color: #8795A1;
+}
+
+.ProdDesc .ColorDesc p {
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+}
+
+.ProdDesc .ColorOption {
+    display: inline-block;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    border: 5px solid rgb(223, 221, 221);
+    cursor: pointer;
+    margin: 0 2px;
+}
+
+.ProdDesc .ColorOption:hover,
+.ProdDesc .ColorOption:active {
+    filter: brightness(90%);
+}
+
+.ProdDesc .ProductImages {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80px;
+}
+
+.ProdDesc .ProductImages img {
+    width: 70px;
+    height: 70px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    margin: 5px 0;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.ProdDesc .ProductImages img.active {
+    border: 1.5px solid rgb(44, 43, 43);
+}
+
+.ProdDesc .ProductSize {
+    padding: 15px 0 5px 0;
+    border-bottom: 1px solid #ccc;
+}
+
+.ProdDesc .SizeErrMssg {
+    position: absolute;
+    top: 39px;
+    left: 22px;
+    font-size: 13px;
+    color: red;
+    /* transition: transform 0.2s ease-in-out;  */
+}
+
+.ProdDesc .Animate {
+    animation: 0.2s errMssg;
+}
+
+@keyframes errMssg {
+    0% {transform: translateX(0px)}
+    25% {transform: translateX(8px)}
+    50% {transform: translateX(0px)}
+    75% {transform: translateX(-8px)}
+    100% {transform: translateX(0px)}
+}
+
+@media (max-width: 992px) {
+
+    .ProdDesc .ProductImages {
+        justify-content: flex-end; 
+        padding-bottom: 50px;
+        width: 80px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    .ProdDesc .CartBtn {
+        font-size: 20px;
+    }
+
+    .ProdDesc .Back {
+        margin-bottom: 0;
+    }
+
+    .ProdDesc .ProductImages {
+        padding-bottom: 35px;
+    }
+}
+
+@media (max-width: 576px) {
+    .ProdDesc .CartBtn {
+        font-size: 16px;
+    }
+
+    .ProdDesc .Price {
+        font-size: 15px;
+    }
+
+    .ProdDesc .ProductName {
+        font-size: 20px;
+    }
+
+    .ProdDesc .Back {
+        font-size: 13px;
+        margin-bottom: 0;
+    }
+
+    .ProdDesc .ProductImages {
+        padding-bottom: 20px;
+    }
+
+    .ProdDesc .ProductImages img {
+        width: 45px;
+        height: 45px;
+    }
+}
+
+
+

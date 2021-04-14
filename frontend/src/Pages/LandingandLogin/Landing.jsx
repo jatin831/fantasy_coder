@@ -354,7 +354,7 @@ export default Watch(
                     </a>
                   </div>
                   <div className="col-md-6 col-lg-4 d-flex align-items-stretch mb-5 mb-lg-0">
-                    <a href="">
+                    <a href="/store">
                       <div className="icon-box" data-aos="fade-up" data-aos-delay="300">
                         <div className="icon"><i className="bx bx-store"></i></div>
                         <h4 className="title">Merchandise Store</h4>
