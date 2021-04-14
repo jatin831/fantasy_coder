@@ -1,0 +1,123 @@
+.Left-Col {
+    width: 50%;
+}
+
+.Checkout-Details-Container {
+    width: 50%;
+    background-color: #F8FAFC;
+    border-left: 1px solid #ccc;
+}
+
+.Checkout-Container {
+    width: 640px;
+    max-width: 100%;
+    margin-left: auto;
+    margin-top: 20px;
+    padding: 10px;
+}
+
+.Checkout-Details {
+    width: 90%;
+    margin: 40px auto;
+}
+
+.Directory {
+    width: 100%;
+    padding: 8px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.Directory span {
+    margin: 0 8px;
+    font-size: 15px;
+    position: relative;
+    color: #3D4852;
+}
+
+.Directory-Icons {
+    padding-top: 5px;
+    font-size: 11px !important;
+}
+
+.Directory-Icons svg {
+    position: absolute;
+    color: rgb(134, 127, 127);
+    top: 4px;
+    left: -5px;
+}
+
+.Directory .active {
+    font-weight: bold;
+}
+
+.Directory-Shipping:hover {
+    cursor: pointer;
+}
+
+.Directory-Payment.active:hover {
+    cursor: pointer;
+}
+
+.Checkout-Content {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.Footer-Links li a{
+    color: #3490DC;
+    font-size: 12px;
+}
+
+.Border-Bottom-Light {
+    border-bottom: 1px solid #eee;
+}
+
+.Border-Bottom-Gray {
+    border-bottom: 1px solid #eee;
+}
+
+.SuperContainer {
+    display: flex;
+}
+
+@media (max-width: 1022px) {
+    .SuperContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .Left-Col {
+        width: 100%;
+    }
+
+    .Checkout-Container {
+        margin: 20px auto;
+    }
+
+    .Checkout-Details-Container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 576px) {
+    .Checkout-Details-Container {
+        font-size: 14px !important
+    }
+
+    .ShippingDetails {
+        font-size: 14px;
+    }
+
+    .Checkout-Details {
+        width: 95%;
+    }
+
+    .Directory span {
+        margin: 0 6px;
+        font-size: 12px;
+    }
+
+    .Footer-Links li a{
+        font-size: 10px;
+    }
+}

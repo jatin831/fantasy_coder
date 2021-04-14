@@ -33,6 +33,7 @@ class MainPage extends Component {
           <ProtectedRoute path="/user" exact component={Contests} />
           <ProtectedRoute path="/user/contests" exact component={Contests} />
           <ProtectedRoute path="/user/problems" exact component={Problemlist} />
+          
         </Switch>
       </>
     );
