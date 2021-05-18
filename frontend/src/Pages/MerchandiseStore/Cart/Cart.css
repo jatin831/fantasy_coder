@@ -25,8 +25,9 @@
     background-color: #F8FAFC;
 }
 
-.Cart-Subtotal, .Cart-Shipping, .Cart-Total {
+.Cart-Subtotal, .Cart-Total {
     display: flex;
+    position: relative;
     justify-content: space-between;
     /* border: 2px solid black; */
     padding: 20px 5px;
@@ -34,6 +35,32 @@
     border-bottom: 1px solid #eee;
     font-size: 17px;
     color: #606F7B
+}
+
+.Cart-Shipping {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    padding: 25px 5px;
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    font-size: 17px;
+    color: #606F7B
+}
+
+.Cart_CoinsUsed {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    font-size: 13px;
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.Cart_CoinsUsed img {
+    height: 13px;
+    width: 13px;
+    margin-left: 3px;
+    margin-top: -2px;
 }
 
 .Cart-Total {
@@ -62,6 +89,48 @@
     letter-spacing: 1px;
 }
 
+.Cart_CoinContainers {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 15px;
+}
+
+.Cart_Coins {
+    color: #FEA116;
+    font-weight: bold;
+    margin-left: 3px;
+    font-size: 16px;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.Cart_CoinImg {
+    width: 16px;
+    height: 16px;
+    margin-left: 3px;
+    margin-top: -4px;
+}
+
+.Cart_Discount {
+    width: 100%;
+    padding: 8px 0;
+    font-size: 16px;
+    outline: none;
+    margin: 10px 0;
+    margin-bottom: 0;
+    /* border-bottom: 1px solid #ccc; */
+    border-radius: 4px;
+    letter-spacing: 1px;
+}
+
+.Cart_RedeemCoins {
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.Cart_RedeemCoins option {
+    height: 50px;
+}
+
 .PromoCode {
     width: 100%;
     margin-top: 35px;
@@ -73,9 +142,20 @@
 
 .Cart-CheckoutBtn {
     width: 100%;
-    margin-top: 25px;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 35px;
+    /* margin-top: 25px; */
+    /* border-bottom: 1px solid #ccc; */
+    padding-bottom: 15px;
+}
+
+.Discount_Error {
+    position: fixed;
+    z-index: 100 !important;
+    bottom: 40%;
+    box-shadow: 0 4px 8px #ccc; 
+    left: 50%;
+    transform: translateX(-50%);
+    width: 500px;
+    max-width: 90%;
 }
 
 .TermsNCond {

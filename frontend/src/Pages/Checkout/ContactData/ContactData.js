@@ -14,53 +14,53 @@ class ContactData extends Component  {
     state = {
         contactForm: {
             firstName: {
-              value: this.props.currContactData.firstName || '',
+              value: '',
               validation: {
                 required: true,
               },
               showErrMssg: false,
               errMssg: "Enter Your First Name",
-              valid: this.props.currContactData.firstName !== undefined
+              valid: false
             },
             lastName: {
-              value: this.props.currContactData.lastName || '',
+              value: '',
               validation: {
                 required: true,
               },
               showErrMssg: false,
               errMssg: "Enter Your Last Name",
-              valid: this.props.currContactData.lastName !== undefined
+              valid: false
             },
             email: {
-              value: this.props.currContactData.email || '',
+              value: '',
               validation: {
                 required: true,
                 type: 'email'
               },
               showErrMssg: false,
               errMssg: "Enter a Valid Email",
-              valid: this.props.currContactData.email !== undefined
+              valid: false
             },
             address: {
-              value: this.props.currContactData.address || '',
+              value: '',
               validation: {
                 required: true
               },
               showErrMssg: false,
               errMssg: "Enter Your Address",
-              valid: this.props.currContactData.address !== undefined
+              valid: false
             },
             city: {
-              value: this.props.currContactData.city || '',
+              value: '',
               validation: {
                 required: true
               },
               showErrMssg: false,
               errMssg: "Enter Your City",
-              valid: this.props.currContactData.city !== undefined
+              valid: false
             },
             postalCode: {
-              value: this.props.currContactData.postalCode || '',
+              value: '',
               validation: {
                 required: true,
                 type: "number",
@@ -68,19 +68,19 @@ class ContactData extends Component  {
               },
               showErrMssg: false,
               errMssg: "Enter a 6-Digit Zip Code",
-              valid: this.props.currContactData.postalCode !== undefined
+              valid: false
             },
             state: {
-              value: this.props.currContactData.state || '',
+              value: '',
               validation: {
                 required: true
               },
               showErrMssg: false,
               errMssg: "Enter Your State",
-              valid: this.props.currContactData.state !== undefined
+              valid: false
             },
             phone: {
-              value: this.props.currContactData.phone || '',
+              value: '',
               validation: {
                 required: true,
                 type: 'number',
@@ -89,37 +89,66 @@ class ContactData extends Component  {
               },
               showErrMssg: false,
               errMssg: "Enter a Valid Phone Number",
-              valid: this.props.currContactData.phone !== undefined
+              valid: false
             },
             aptNo: {
-              value: this.props.currContactData.aptNo || '',
+              value: '',
               validation: {
               },
               valid: true
             },
           },
-          isFormValid: (this.props.currContactData.firstName !== undefined && this.props.currContactData.firstName !== "") ,
+          isFormValid: false ,
           url: null
     }
 
-    handlePostRequest = () => {
-      const BASE_URL = "https://securegw-stage.paytm.in";
-      const url = BASE_URL + '/theia/processTransaction';
-      const transaction_data = {
-        "MID": "wKvHLC50416086372235",
-        "WEBSITE": "WEBSTAGING",
-        "INDUSTRY_TYPE_ID": "Retail",
-        "ORDER_ID": "xyz007",
-        "CUST_ID": "007",
-        "TXN_AMOUNT": "100.00",
-        "CHANNEL_ID": "WEB",
-        "MOBILE_NO": "7777777777",
-        "EMAIL": "example@paytm.com",
-        "CALLBACK_URL": "http://127.0.0.1:5000/callback"
+    componentDidMount() {
+      let shippingDetails = localStorage.getItem('Codeium__shippingDetails');
+      if (shippingDetails) {
+        shippingDetails = JSON.parse(shippingDetails);
+      } else {
+        shippingDetails = {};
       }
-      // console.log(this.props.history);
-      this.setState({url: url});
+
+      const contactForm = {
+        ...this.state.contactForm
+      }
+      for (let key in shippingDetails) {
+        contactForm[key] = {
+          ...contactForm[key],
+          value: shippingDetails[key],
+          valid: true
+        }
+      }
+
+      this.setState({
+        contactForm: contactForm,
+        isFormValid: true
+      })
     }
+
+    saveContactData = (contactData) => {
+      localStorage.setItem('Codeium__shippingDetails', JSON.stringify(contactData));
+    }
+
+    // handlePostRequest = () => {
+    //   const BASE_URL = "https://securegw-stage.paytm.in";
+    //   const url = BASE_URL + '/theia/processTransaction';
+    //   const transaction_data = {
+    //     "MID": "wKvHLC50416086372235",
+    //     "WEBSITE": "WEBSTAGING",
+    //     "INDUSTRY_TYPE_ID": "Retail",
+    //     "ORDER_ID": "xyz007",
+    //     "CUST_ID": "007",
+    //     "TXN_AMOUNT": "100.00",
+    //     "CHANNEL_ID": "WEB",
+    //     "MOBILE_NO": "7777777777",
+    //     "EMAIL": "example@paytm.com",
+    //     "CALLBACK_URL": "http://127.0.0.1:5000/callback"
+    //   }
+    //   // console.log(this.props.history);
+    //   this.setState({url: url});
+    // }
     
     InputChangeHandler = (event) => {
         let inputValue = event.target.value;
@@ -154,7 +183,9 @@ class ContactData extends Component  {
 
     checkValidity = (value, rules) => {
         let isValid = true;
-
+        if (!value) {
+          isValid = false;
+        }
         if (rules.required) {
             isValid = value.trim() !== '' && isValid;
         }
@@ -180,13 +211,13 @@ class ContactData extends Component  {
 
     formSubmitHandler = (event) => {
       event.preventDefault();
-      console.log(this.state.isFormValid);
       if (this.state.isFormValid) {
         const contactData = {};
         for (let key in this.state.contactForm) {
           contactData[key] = this.state.contactForm[key].value;
         }
-        this.props.saveContactData(contactData);
+        this.saveContactData(contactData);
+        this.props.formSubmit();
       } else {
         const contactForm = { 
           ...this.state.contactForm 
@@ -203,7 +234,7 @@ class ContactData extends Component  {
           }
         }
         this.setState({contactForm: contactForm});
-      }
+      } 
     }
 
     render() {

@@ -3,6 +3,19 @@ div.CartItems {
     padding: 10px;
 }
 
+.EmptyCart-ImgContainer {
+    margin-top: 40px;
+    width: 280px;
+    height: 260px;
+    margin-bottom: 20px;
+    margin-left: -80px;
+}
+
+.EmptyCart-ImgContainer img {
+    width: 100%;
+    height: 100%;
+    margin-left: 8px;
+}
 
 .CartItem {
     display: flex;

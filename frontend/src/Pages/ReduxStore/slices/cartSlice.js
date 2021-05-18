@@ -15,7 +15,10 @@ export const cartSlice = createSlice({
     name: "cart",
     initialState: {
         cartProducts: [],
-        totalItems: 0
+        totalItems: 0,
+        discount: 0,
+        coinsUsed: 0,
+        shippingDetails: null
     },
     reducers: {
         addToCart: (state, currProd) => {
@@ -72,10 +75,31 @@ export const cartSlice = createSlice({
 
             state.totalItems = calcTotalItems(cartItems);
             state.cartProducts = cartItems;
+
+            let discount = localStorage.getItem('Codeium__Discount');
+            if (discount) {
+                discount = JSON.parse(discount);
+            } else {
+                discount.discount = 0;
+                discount.coinsUsed = 0;
+            }
+            state.discount = parseInt(discount.discount);
+            state.coinsUsed = parseInt(discount.coinsUsed);
+        },
+
+        setDiscount: (state, action) => {
+            state.discount = action.payload.discount;
+            state.coinsUsed = action.payload.coinsUsed
+            localStorage.setItem('Codeium__Discount', JSON.stringify(action.payload));
+        },
+
+        storeShippingDetails: (state, action) => {
+            state.shippingDetails = action.payload;
+            localStorage.setItem('Codeium', action.payload);
         }
     }
 })
 
-export const {addToCart, deleteFromCart, removeFromCart, loadCart} = cartSlice.actions;
+export const {addToCart, deleteFromCart, removeFromCart, loadCart, setDiscount, storeShippingDetails} = cartSlice.actions;
 
 export default cartSlice.reducer;

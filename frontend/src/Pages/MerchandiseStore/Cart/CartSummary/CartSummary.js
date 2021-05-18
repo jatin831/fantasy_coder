@@ -1,19 +1,25 @@
 import React from 'react';
 import './CartSummary.css';
 import { connect } from "react-redux";
+import Img from "../../../../assets/img/emptyCart3.png";
 import * as actions from "../../../ReduxStore/slices/cartSlice";
 
-const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1); 
-}
-
 const CartSummary = (props) => {
-    console.log(props.cartProducts);
     return (
-        <div className="CartItems">
-            <p className="ShipmentDate ">SHIPPING BY APR 27, 2021</p>
-            {
-                props.cartProducts.map(item => {
+    <div className="CartItems">
+        <p className="ShipmentDate ">SHIPPING BY INDIAN POST</p>
+        {
+            props.cartProducts.length == 0 ? (
+                <div className="d-flex flex-column align-items-center justify-content-center">
+                    <div className="EmptyCart-ImgContainer">
+                        <img src={Img} />
+                    </div>
+                    <p>Your Cart is Empty</p>
+                    <a role="button" className="btn btn-dark mt-3 btn-lg" href='/store'>
+                        Shop Now    
+                    </a>
+                </div>
+            ) : props.cartProducts.map(item => {
                     return (
                         <div key={item.uniqueKey} className="CartItem pl-3">
                             <div className="ImgContainer">
@@ -23,7 +29,8 @@ const CartSummary = (props) => {
                             <div className="ProdDesc ml-3">
                                 <div className="ItemName"><a href={'/store/' + item.id}>{item.name}</a></div>
                                 <div className="ItemCategory">{item.category}</div>
-                                <div className="ItemDesc">${item.perUnitPrice} - {capitalize(item.color)} - {item.size}</div>
+                                <div className="ItemDesc">&#8377;{item.perUnitPrice}</div>
+                                {/* <div className="ItemDesc">${item.perUnitPrice} - {capitalize(item.color)} - {item.size}</div> */}
                             </div>
 
                             <div className="Controls">
@@ -36,12 +43,12 @@ const CartSummary = (props) => {
                                     Remove
                                 </button>
                             </div>
-                            
                         </div>
                     )
-                })
-            }
-        </div>
+                }
+            )
+        }
+    </div>
     )
 }
 

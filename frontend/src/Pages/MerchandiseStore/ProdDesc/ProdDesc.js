@@ -1,88 +1,69 @@
 import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Form } from 'react-bootstrap';
 import "./ProdDesc.css";
+import { withRouter } from 'react-router-dom';
 import Sidedrawer from './Sidedrawer/Sidedrawer';
-import ImgRed from "../../../assets/img/jacket.jpg";
-import ImgRedBack from "../../../assets/img/jacketBack.jpg";
-import ImgBlack from '../../../assets/img/hoodie.jpg';
-import ImgBlackBack from '../../../assets/img/hoodieBack.jpg';
-import ImgGreen from '../../../assets/img/hoodieGreen.jpg';
-import ImgGreenBack from '../../../assets/img/hoodieGreenBack.jpg';
+import Spinner from '../Spinner/Spinner';
 import { connect } from 'react-redux';
 import * as actions from '../../ReduxStore/slices/cartSlice';
-
-const fakeProduct = {
-  id: "xyz007",
-  name: "Floor Gang",
-  category: "Lightweight Full Zip Jacket",
-  description:
-    "Rock this simplistic design all year round on jackets, tees, and hoodies!",
-  defaultColor: "red",
-  colors: {
-    red: {
-      images: [ImgRed, ImgRedBack],
-      sizes: ["S", "M", "L", "XL", "XXL", "3XL"],
-    },
-
-    green: {
-      images: [ImgGreen, ImgGreenBack],
-      sizes: ["S", "M", "L", "XL", "XXL", "3XL"],
-    },
-
-    black: {
-      images: [ImgBlack, ImgBlackBack],
-      sizes: ["S", "M", "L", "XL", "XXL", "3XL"],
-    },
-  },
-  price: 24.99,
-};
+import axios from "axios";
 
 class ProdDesc extends Component {
 
   state = {
-    addedToCart: false,
-    selectedColor: fakeProduct.defaultColor,
-    product: fakeProduct.colors[fakeProduct.defaultColor],
-    selectedSize: null,
-    curImage: 0,
-    showSizeMssg: false,
-    animate: false,
-    showSidedrawer: false
+      product: null,
+      addedToCart: false,
+      curImage: 0,
+      animate: false,
+      showSidedrawer: false,
+      loading: false
+  }
+
+  componentDidMount() {
+    window.scroll(0, 0);
+    this.setState({
+      loading: true
+    })
+    axios.get('https://server.codeium.tech/product/' + this.props.location.pathname.slice(14))
+      .then(res => {
+        const product = res.data.msg[0];
+        console.log(product);
+        this.setState({
+            product: {
+                id: product.product_id.trim(),
+                description: product.pdesc,
+                price: product.price,
+                name: product.product_name,
+                images: [`data:image/png;base64, ${product.front_image.slice(2, -1)}`, `data:image/png;base64, ${product.back_image.slice(2, -1)}`],
+                category: product.product_category
+            },
+            loading: false
+        })
+    })
+      .catch(err => {
+        console.log(err);
+        this.setState({
+          loading: false
+        })
+    }) 
   };
 
   addToCart = () => {
-
     const currProd = {
-      id: fakeProduct.id,
-      name: fakeProduct.name,
-      category: fakeProduct.category,
-      color: this.state.selectedColor,
-      size: this.state.selectedSize,
-      uniqueKey: fakeProduct.id + this.state.selectedColor + this.state.selectedSize, 
+      id: this.state.product.id,
+      name: this.state.product.name,
+      category: this.state.product.category,
       quantity: 1,
-      img: this.state.product.images[this.state.curImage],
-      perUnitPrice: fakeProduct.price,
+      uniqueKey: this.state.product.id,
+      img: this.state.product.images[0],
+      perUnitPrice: this.state.product.price,
     }
     
     this.props.addToCart(currProd);
   };
 
-  componentDidMount() {
-    window.scroll(0, 0);
-  };
-
   currImageHandler = (index) => {
     this.setState({ curImage: index });
   };
-
-  colorChangeHandler = (color) => {
-    this.setState({selectedColor: color, product: fakeProduct.colors[color], curImage: 0});
-  };
-
-  changeSizeHandler = (event) => {
-    this.setState({selectedSize: event.target.value, showSizeMssg: false});
-  }
 
   removeSidedrawerHandler = () => {
     this.setState({showSidedrawer: false})
@@ -102,99 +83,49 @@ class ProdDesc extends Component {
   }
 
   render() {
-    // console.log(this.props.match.params.id); // this id will be used to fetch current products desc
-
-    let showSizeMssg = null;
-    if (this.state.showSizeMssg) {
-      showSizeMssg = (
-        <p className={"SizeErrMssg " + (this.state.animate ? 'Animate' : '')}>Please Select a size</p>
-      )
-    }
-
     if(this.state.animate) {
       setTimeout(() => this.setState({animate: false}), 200);
     }
 
-    return (
-      
+    return this.state.loading ? <Spinner /> : (
       <div className="ProdDesc">
         <Sidedrawer show = {this.state.showSidedrawer} removeSidedrawer = {this.removeSidedrawerHandler} />
         <div className="DescContainer">
           <div className="row justify-content-center m-0">
-            <div className="col-12 text-center text-lg-left col-lg-6">
-              <h2 className="ProductName mt-4 mb-3">{fakeProduct.name}</h2>
-              <div className="d-flex">
+            <div className="col-12 px-xs-3 px-0 text-center text-lg-left col-lg-6">
+              <h2 className="ProductName mt-4 mb-3">{this.state.product?.name}</h2>
+              <div className="d-flex Product_Display ">
 
                 <div className="ProductImages">
-                  {this.state.product.images.map((Image, index) => {
-                    return (
-                      <img
-                        className={
-                          index === this.state.curImage ? "active" : ""
-                        }
-                        onClick={this.currImageHandler.bind(this, index)}
-                        key={index}
-                        src={Image}
-                      />
-                    );
-                  })}
+                  {
+                    this.state.product?.images.map((Image, index) => {
+                      return (
+                        <img
+                          className={
+                            index === this.state.curImage ? "active" : ""
+                          }
+                          onClick={this.currImageHandler.bind(this, index)}
+                          key={index}
+                          src={Image}
+                        />
+                      );
+                    })
+                  }
                 </div>
-
-                <img
+                <div className="ProductImgContainer">
+                  <img
                   className="ProductImg"
-                  src={this.state.product.images[this.state.curImage]}
-                ></img>
+                  src={this.state.product?.images[this.state.curImage]}
+                  />
+                </div>
+                
               </div>
             </div>
-            <div className="col-12 text-center text-lg-left col-lg-3 pt-4">
-              <h4 className="Price">${fakeProduct.price}</h4>
+            <div className="col-12 text-center ml-lg-3 text-lg-left col-lg-4 pt-4">
+              <h4 className="Price">&#8377;{this.state.product?.price}</h4>
               <div className="Description d-flex flex-column justify-content-around">
-                <p style={{ color: "#8795A1" }}>{fakeProduct.category}</p>
-                <p>{fakeProduct.description}</p>
-
-                <div className="d-flex justify-content-between ProductColor">
-                  <div className="ColorDesc">
-                    <p className="ColorText">COLOR</p>
-                    <p className="ColorName">{this.state.selectedColor}</p>
-                  </div>
-                  <div className="ColorTray">
-                    {
-                      Object.keys(fakeProduct.colors).map((key) => {
-                        return (
-                          <div
-                            key={key}
-                            style={{ backgroundColor: key }}
-                            className="ColorOption"
-                            onClick={this.colorChangeHandler.bind(this, key)}
-                          ></div>
-                        );
-                      })
-                    }
-                  </div>
-                </div>
-
-                <div className="d-flex justify-content-between ProductSize">
-                  <div className="ColorDesc">
-                    <p className="mt-2 ColorText">SIZE</p>
-                  </div>
-                  <div className="ColorTray">
-                  { showSizeMssg }
-                  <Form>
-                    <Form.Group controlId="exampleForm.SelectCustomSizeSm">
-                      <Form.Control style={{width: '140px', fontSize: '15px'}} onChange={this.changeSizeHandler} as="select"custom>
-                        <option disabled={this.state.selectedSize ? true : false}>Select Size...</option>
-                        {
-                          this.state.product.sizes.map(size => {
-                            return (
-                              <option key={size} value={size}>{size}</option>
-                            )
-                          })
-                        }
-                      </Form.Control>
-                    </Form.Group>
-                  </Form>
-                  </div>
-                </div>
+                <p style={{ color: "#8795A1" }}>{this.state.product?.category}</p>
+                <p>{this.state.product?.description}</p>
               </div>
               <button
                 onClick={this.addToCartHandler}
@@ -216,4 +147,4 @@ const mapDispatchToProps = dispatch => {
   }
 }
 
-export default connect(null, mapDispatchToProps)(ProdDesc);
+export default connect(null, mapDispatchToProps)(withRouter(ProdDesc));

@@ -1,49 +1,85 @@
 import React, { Component } from 'react';
+import { withRouter } from 'react-router-dom';
 import TopImg from './StoreComponents/TopImg';
 import ProductFilter from './StoreComponents/ProductFilter';
 import './Store.css';
-import Hats from './Products/hats';
-import Hoodies from './Products/hoodies';
-import Jackets from './Products/jackets';
 import Product from './StoreComponents/Product';
-import Fade from 'react-bootstrap/Fade';
+import Spinner from '../Spinner/Spinner';
+import axios from 'axios';
 
 class Store extends Component {
 
     state = {
         selectedProduct: "all",
-        productList: [...Hats, ...Hoodies, ...Jackets].sort( () => .5 - Math.random() ),
+        productList: [],
         curProducts: [],
         isFull: false,
+        loading: false
     }
 
-    selectProduct = (newProduct) => {
-        if(newProduct === this.state.selectedProduct) {
-            return;
-        }
-        this.setState({selectedProduct: newProduct, curProducts: [], isFull: false});
-        if(newProduct === 'hats') {
-            this.setState({productList: [...Hats]});
-        } 
-        else if(newProduct === 'hoodies') {
-            this.setState({productList: [...Hoodies]});
-        }
-        else if(newProduct === 'jackets') {
-            this.setState({productList: [...Jackets]});
-        }
-        else if(newProduct === 'all') {
-            this.setState({productList: [...Hats, ...Hoodies, ...Jackets].sort( () => .5 - Math.random() )});
-        }
+    getProductsFromServer = () => {
+        this.setState({
+            loading: true
+        })
+        axios.get('https://server.codeium.tech/product')
+        .then(response => {
+            if (Array.isArray(response.data.msg)) {
+                this.setState({
+                    productList: response.data.msg
+                })
+                this.increaseProducts();
+            }
+            this.setState({
+                loading: false
+            })
+        })
+        .catch(err => {
+            console.log(err);
+            this.setState({
+                loading: false
+            })
+        })
     }
 
     componentDidMount() {
-        this.increaseProducts();
+        this.getProductsFromServer();
     }
 
-    componentDidUpdate(_, prevState) {
-        if(prevState.selectedProduct !== this.state.selectedProduct) {
+    componentDidUpdate(prevProps, _) {
+        let currLocation = this.props.location.pathname;
+        if(prevProps.location.pathname !== currLocation) {
             this.increaseProducts();
+            if (currLocation === '/store') {
+                this.getProductsFromServer();
+            } else {
+                this.setState({
+                    loading: true
+                })
+                const category = currLocation.slice(16);
+                axios.get('https://server.codeium.tech/products/' + category)
+                .then(response => {
+                    if (Array.isArray(response.data.msg)) {
+                        console.log(response.data.msg);
+                        this.setState({
+                            productList: response.data.msg,
+                            curProducts: []
+                        })
+                        this.increaseProducts();
+                    }
+                    this.setState({
+                        loading: false
+                    })
+                })
+                .catch(err => {
+                    console.log(err);
+                    this.setState({
+                        loading: false
+                    })
+                })
+            }
+            
         }
+
     }
 
     increaseProducts = () => {
@@ -61,6 +97,8 @@ class Store extends Component {
             if(prevList.length === totalLen) {
                 this.setState({isFull: true});
             }
+        } else {
+            this.setState({isFull: true})
         }
     }
 
@@ -69,13 +107,10 @@ class Store extends Component {
         return (
             <div className="Store mt-2">
                 <TopImg />
-                <div className = "ProductsHeader">
+                <div className = "ProductsHeader mb-4">
                     <ul>
                         <li className="active">
                             <a href="">PRODUCTS</a>
-                        </li>
-                        <li>
-                            <a href="/store">ABOUT</a>
                         </li>
                     </ul>
                 </div>
@@ -87,10 +122,11 @@ class Store extends Component {
                         </div>
                         
                         <div className="col-md-10 col-sm-12 ProductList" >
-                            
+
                             {
+                                this.state.loading ? <Spinner /> :
                                 this.state.curProducts.map(product => {
-                                    return <Product key={product.id} product={product} />;
+                                    return <Product key={product.product_id} product={product} />;
                                 })
                             }
                             
@@ -114,4 +150,4 @@ class Store extends Component {
     
 }
 
-export default Store;
+export default withRouter(Store);

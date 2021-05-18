@@ -1,0 +1,87 @@
+.OrderDetail-ImgContainer {
+    width: 80px;
+    height: 80px;
+}
+
+.OrderDetail-ImgContainer img {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+
+.OrderDetails-ProductName:hover {
+    text-decoration: underline; 
+    color: #444444;      
+}
+
+.OrderDetails-ProductName {
+    color: #444444;      
+}
+
+.ProductData p {
+    padding: 0;
+    margin: 0;
+    font-size: 12px;
+    line-height: normal;
+}
+
+.ProductData {
+    width: 300px;
+}
+
+.Card {
+    width: 90%;
+    /* min-width: 300px; */
+    background-color: #F8F9FA;
+    color: #68696a !important;
+    padding: 15px;
+    /* height: 600px; */
+    margin: 20px auto;
+}
+
+.Card h6 {
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #444444;
+}
+
+.OrderSummary-List {
+    margin: 25px 0;
+    list-style: none;
+    padding: 10px 10px 10px 0;
+}
+
+.OrderSummary-List li {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px 0;
+    border-bottom: 2px solid #eee;
+    font-size: 14px;
+    
+}
+
+.TotalAmount-Span {
+    font-weight: bold;
+    font-size: 18px;
+    color: black;
+}
+
+.OrderDetails-ShippingAdrress p {
+    padding: 0;
+    margin: 0;
+    font-size: 15px;
+}
+
+.OrderDetails-ShippingAdrress {
+    margin: 20px 0;
+}
+
+@media (max-width: 576px) {
+    .Card {
+        padding: 15px 8px;
+    }
+
+    .OrderSummary-List {
+        margin: 15px 0;
+    }
+}

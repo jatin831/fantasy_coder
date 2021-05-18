@@ -43,11 +43,11 @@ BASE_URL = "https://securegw-stage.paytm.in"
 
 @app.route("/")
 def index():
-    amount = 11.07
+    amount = 299.88
     transaction_data = {
-        "MID": MERCHANT_ID,
-        "WEBSITE": WEBSITE_NAME,
-        "INDUSTRY_TYPE_ID": INDUSTRY_TYPE_ID,
+        "MID": "wKvHLC50416086372235",
+        "WEBSITE": "WEBSTAGING",
+        "INDUSTRY_TYPE_ID": "Retail",
         "ORDER_ID": str(datetime.datetime.now().timestamp()),
         "CUST_ID": "007",
         "TXN_AMOUNT": str(amount),
@@ -87,7 +87,7 @@ def callback():
     verification_response = requests.post(url=url, json=transaction_verify_payload)
     logging.info("Verification response: {verification_response}".format(
         verification_response=verification_response.json()))
-
+    print(verification_response.json())
     return "OK"
 
 if __name__ == '__main__':

@@ -1,45 +1,56 @@
-import React from 'react';
+import axios from 'axios';
+import React, { Component } from 'react';
+import { Link, withRouter } from 'react-router-dom';
 
-const ProductFilter = (props) => {
+const capitalize = (word) => {
+    return word[0].toUpperCase() + word.slice(1);
+}
 
-    return (
+class ProductFilter extends Component {
 
-        <div className="ProductFilter">
-            <h6 className="FilterProdHeader">FILTER BY PRODUCT</h6>
-            <ul className="ProdCategories">
-                <li className= { props.selectedProduct == 'all' ? 'active' : null } 
-                    onClick = {props.clicked.bind(this, 'all')}>
-                    All Products
-                </li>
-                <li className= { props.selectedProduct == 'hats' ? 'active' : null } 
-                    onClick = {props.clicked.bind(this, 'hats')}>
-                    Hats
-                </li>
-                <li className= { props.selectedProduct == 'hoodies' ? 'active' : null } 
-                    onClick = {props.clicked.bind(this, 'hoodies')}>
-                    Hoodies
-                </li>
-                <li className= { props.selectedProduct == 'jackets' ? 'active' : null }
-                    onClick = {props.clicked.bind(this, 'jackets')}>
-                    Jackets
-                </li>
-                <li className= { props.selectedProduct == 'longSleeves' ? 'active' : null }
-                    onClick = {props.clicked.bind(this, 'longSleeves')}>
-                    Long sleeves
-                </li>
-                <li className= { props.selectedProduct == 'misc' ? 'active' : null }
-                    onClick = {props.clicked.bind(this, 'misc')}>
-                    Miscellaneous
-                </li>
-                <li className= { props.selectedProduct == 'shirts' ? 'active' : null }
-                    onClick = {props.clicked.bind(this, 'shirts')}>
-                    Shirts
-                </li>
-            </ul>
-        
-        </div>
-    )
+    state = {
+        categories: []
+    }
+
+    componentDidMount() {
+        axios.get('https://server.codeium.tech/product/categories')
+            .then(res => {
+                this.setState({
+                    categories: res.data.msg.map(category => category.product_category)
+                })
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+    render() {
+
+        return (
+            <div className="ProductFilter">
+                <h6 className="FilterProdHeader">FILTER BY PRODUCT</h6>
+                <ul className="ProdCategories">
+                    <Link to='/store' >
+                        <li className= { this.props.location.pathname == '/store' ? 'active' : null }>
+                                All Products
+                        </li>
+                    </Link>
+                    {
+                        this.state.categories.map(category => {
+                            return (
+                                <Link key={category} to={'/store/category/' + category}>
+                                    <li className= { this.props.location.pathname == '/store/category/' + category ? 'active' : null }>
+                                        {capitalize(category)}    
+                                    </li>
+                                </Link>
+                            )
+                        })
+                    }
+                </ul>
+            
+            </div>
+        )
+    }
     
 }
 
-export default ProductFilter;
+export default withRouter(ProductFilter);

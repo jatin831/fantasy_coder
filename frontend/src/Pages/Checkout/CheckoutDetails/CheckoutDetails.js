@@ -1,18 +1,14 @@
 import React from 'react';
-import CartItems from '../../MerchandiseStore/Cart/CartItems/CartItems';
+import mapDiscountToCoins from '../../mapDiscountToCoins';
+import CoinImg from '../../../assets/img/coin.png';
 import './CheckoutDetails.css';
 import { connect } from "react-redux";
 
-const capitalize = (str) => {
-    return str.charAt(0).toUpperCase() + str.slice(1); 
-}
-
 const CheckoutDetails = (props) => {
-    console.log(props);
     let totalPrice = props.cartProducts.reduce((total, el) => total + (el.quantity * el.perUnitPrice), 0).toFixed(2);
     return (
-        <div className="Checkout-Details">
-            <h3 className="mb-5 text-sm-22 ml-3">${totalPrice}</h3>
+        <div style={{...props.style}} className="Checkout-Details">
+            <h3 className="mb-5 text-sm-22 ml-3">&#8377;{totalPrice}</h3>
             {
                 props.cartProducts.map(item => {
                             return (
@@ -25,11 +21,12 @@ const CheckoutDetails = (props) => {
                                     <div className="ProdDesc ml-3">
                                         <div className="ItemName"><a className="text-sm-14" href={'/store/' + item.id}>{item.name}</a></div>
                                         <div className="ItemCategory text-sm-13">{item.category}</div>
-                                        <div className="ItemDesc text-sm-14">${item.perUnitPrice} - {capitalize(item.color)} - {item.size}</div>
+                                        <div className="ItemDesc text-sm-14">&#8377;{item.perUnitPrice}</div>
+                                        {/* <div className="ItemDesc text-sm-14">${item.perUnitPrice} - {capitalize(item.color)} - {item.size}</div> */}
                                     </div>
 
                                     <div className="Controls justify-content-center text-sm-16">
-                                        ${(item.quantity * item.perUnitPrice).toFixed(2)}
+                                        &#8377;{(item.quantity * item.perUnitPrice).toFixed(2)}
                                     </div>
                                     
                                 </div>
@@ -51,15 +48,23 @@ const CheckoutDetails = (props) => {
                         Subtotal
                     </div>
                     <div>
-                        ${totalPrice}
+                        &#8377;{totalPrice}
                     </div>
                 </div>
                 <div className="d-flex justify-content-between px-3 my-3">
                     <div>
-                        Shipping
+                        Coins Used
                     </div>
                     <div>
-                        $0.00
+                        {props.coinsUsed} <img className="Cart_CoinImg" src={CoinImg} />
+                    </div>
+                </div>
+                <div className="d-flex justify-content-between px-3 my-3">
+                    <div>
+                        You Saved
+                    </div>
+                    <div>
+                        &#8377;{(totalPrice * props.discount * 0.01).toFixed(2)} ({props.discount}%)
                     </div>
                 </div>
                 <hr />
@@ -68,7 +73,7 @@ const CheckoutDetails = (props) => {
                         Total
                     </div>
                     <div>
-                        ${totalPrice}
+                        &#8377;{(totalPrice * (1 - props.discount * 0.01)).toFixed(2)}
                     </div>
                 </div>
             </div>
@@ -78,8 +83,10 @@ const CheckoutDetails = (props) => {
 
 const mapStateToProps = state => {
     return {
-        cartProducts: state.cart.cartProducts
+        cartProducts: state.cart.cartProducts,
+        discount: state.cart.discount,
+        coinsUsed: state.cart.coinsUsed,
     }
 }
 
-export default connect(mapStateToProps, null)(CheckoutDetails);
+export default connect(mapStateToProps)(CheckoutDetails);

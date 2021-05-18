@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+
 import Store from './Store/Store';
 import ProdDesc from './ProdDesc/ProdDesc';
-import { Route, Switch } from 'react-router-dom';
 import Header from './Header/Header';
-import CartItems from './Cart/CartItems/CartItems';
 import Cart from './Cart/Cart';
+import Orders from './Orders/Orders';
 import './ResponsiveTexts.css';
-import { connect } from 'react-redux';
-import * as actions from '../ReduxStore/slices/cartSlice';
+import OrderDetails from './OrderDetails/OrderDetails';
 
 class MerchandiseStore extends Component {
 
@@ -16,10 +17,6 @@ class MerchandiseStore extends Component {
     //     cartProducts: [],
     //     totalItems: 0,
     // }
-
-    componentDidMount() {
-        this.props.loadCart();
-    }
 
     render() {
 
@@ -32,9 +29,14 @@ class MerchandiseStore extends Component {
                         <Cart />
                     )} 
                     />
-                    <Route path='/store/:id' render = {() => (
-                        <ProdDesc />
+                    <Route path='/store/orders' exact render = {() => (
+                        <Orders />
                     )} />
+                    <Route path='/store/orders/:id' render = {() => (
+                        <OrderDetails />
+                    )} />
+                    <Route path='/store/category/:id' exact component = {Store} />
+                    <Route path='/store/product/:id' component = {ProdDesc}/>
                 </Switch>
             </>
          );
@@ -49,10 +51,4 @@ const mapStateToProps = state => {
     }
 }
 
-const mapDispatchToProps = dispatch => {
-    return {
-        loadCart: () => dispatch(actions.loadCart()) 
-    }
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(MerchandiseStore);
+export default connect(mapStateToProps)(withRouter(MerchandiseStore));

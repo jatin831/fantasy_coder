@@ -13,7 +13,6 @@
     margin: 10px auto;
     margin-bottom: 10px;
     padding: 0;
-    /* border: 15px solid black; */
     background: url('../../../assets/img/topImg.jpg');
     background-size: cover;
 }
@@ -167,6 +166,10 @@
         height: 55vw;
     }
 }
+
+.ProdCategories a {
+    color: black;
+} 
 
 .Store .MoreProductContainer {
     width: 100%;

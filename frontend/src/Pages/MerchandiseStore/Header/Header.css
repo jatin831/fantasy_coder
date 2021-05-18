@@ -2,16 +2,65 @@
     font-size: 17px;
 }
 
+.Header {
+    background-image: linear-gradient(
+        180deg
+        ,#000429,#010b32,#00113b,#001544,#00194d,#011e56,#02245f,#022968,#023272,#023b7d,#014487,#004d91) !important;
+}
+
 .Header .Links {
     margin-left: 20px;
 }
 
-.Header {
-    box-shadow: 0 1px 1px #ccc;
+.NavLinks {
+    margin: 0 15px;
+    opacity: 0.6;
+    position: relative;
+}
+
+.Links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.NavLinks:hover, .NavLinks:focus, Nav .active {
+    opacity: 0.9 !important;
+    display: block;
+    transform: translateY(-1px) !important;
+}
+
+.NavLinks:hover::after, .NavLinks:focus::after, Nav .active::after {
+    content: "";
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    height: 2px;
+    width: 100%;
+    background-color: white;
+}
+
+.CartIcon:hover::after, Nav .CartIcon:active::after, .CartIcon:focus::after, .CartIcon.active::after {
+    content: "";
+    position: absolute;
+    bottom: 10px !important;
+    left: 6px;
+    height: 2px;
+    width: 82%;
+    background-color: white;
+}
+
+.Header_NavCollapse {
+    margin-left: 50px;
+}
+
+.Header_CartIcon {
+    margin-right: 25px;
+    color: white;
 }
 
 .Header .CartIcon {
-    opacity: 0.5;
+    opacity: 0.6;
     font-size: 24px;
     position: relative;
 }
@@ -38,7 +87,7 @@
     color: white;
     opacity: 1 !important;
     font-size: 14px;
-    top: 0px;
+    top: 4px;
     left: 22px;
     padding: 1px;
 }
@@ -48,8 +97,41 @@
         margin-left: 0;
     }
 
+    .Header .Links a {
+        margin-top: 3px;
+    }
+
     .Header .CartItems {
-        top: -1px;
-        left: 12px;
+        top: 5px;
+        left: 20px;
+    }
+
+    .Header_CartIcon a {
+        display: inline-block;
+        width: 40px;
+    }
+
+    .Header_CartIcon {
+        margin-right: 0;
+        display: flex !important;
+        align-items: center;
+    }
+
+    .NavLinks {
+        text-align: center;
+    }
+
+    .Header .NavLinks {
+        margin: 5px 0;
+    }
+}
+
+@media (max-width: 450px) {
+    .Header_Logo {
+        padding-left: 0 !important;
+    } 
+
+    .Header_NavCollapse {
+        margin-left: 0px;
     }
 }

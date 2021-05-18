@@ -1,0 +1,152 @@
+.Transaction-Box {
+    width: 100%;
+    padding: 30px 10px;
+    /* border: 1px solid #ccc; */
+    box-shadow: 0 2px 7px #ccc;
+    border-radius: 10px;
+    background-color: white;
+}
+
+.z-index-1600 {
+    z-index: 1501 !important;
+}
+
+/* TRANSACTION SUCCESSFUL */
+
+.Transaction-ImgContainer {
+    width: 130px;
+    height: 130px;
+    margin-bottom: 30px;
+}
+
+.Transaction-ImgContainer img {
+    width: 100%;
+    height: 100%;
+    /* border-radius: 50%; */
+}
+
+.Transaction-List {
+    margin-top: 10px;
+    list-style: none;
+    /* border: 2px solid black; */
+    width: 70%;
+    padding: 10px;
+}
+
+.text-bold {
+    font-weight: bold !important;
+}
+
+.Transaction-List > li {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    padding: 5px 15px;
+    /* border-bottom: 1px solid #ccc; */
+    width: 100%;
+}
+
+.DateTime {
+    color: rgb(121, 120, 120);
+    font-size: 14px;
+    letter-spacing: 2px;
+}
+
+.List-Head {
+    font-weight: bold;
+}
+
+.BtnContainer {
+    width: 60%;
+    margin-top: 30px;
+}
+
+.OrderPlaced {
+    font-size: 18px;
+    padding-bottom: 0px;
+    margin-bottom: 10px;
+}
+
+.Orders-List {
+    width: 100% !important;
+    margin-top: 10px;
+    list-style: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.Orders-List  li {
+    display: flex;
+    justify-content: space-between;
+    /* margin-bottom: 10px; */
+}
+
+.Orders-List .OrderDetails {
+    font-size: 12px;
+    color: #8795A1 !important;
+    margin: 0;
+}
+
+.Transaction_OrderDetails {
+    border-top: 1px solid #ccc;
+    margin-top: 10px;
+    padding-top: 10px !important;
+}
+
+.Orders-List .OrderName {
+    font-size: 15px;
+    margin: 0;
+}
+
+.BackgroundCover {
+    min-height: 100vh;
+    background-color: #eee;
+}
+
+.TransferAmount {
+    font-size: 20px !important;
+    border-top: 1px solid #ccc;
+    /* border-bottom: 1px solid #ccc; */
+    margin-top: 5px;
+    padding-top: 10px !important;
+}
+
+@media (max-width: 1200px) {
+    .Transaction-List {
+        width: 90%;
+    }
+}
+
+@media (max-width: 576px) {
+    .Transaction-ImgContainer {
+        width: 80px;
+        height: 80px;
+    }
+
+    .Transaction-List {
+        width: 100%;
+        padding-top: 0;
+    }
+
+    .DateTime {
+        margin-bottom: 0px;
+    }
+
+    .BtnContainer {
+        margin-top: 15px;
+    }
+
+    .Orders-List {
+        padding-left: 10px;
+    }
+
+    .Transaction-List > li {
+        padding: 15px 8px;
+    }
+}
+
+@media (max-width: 429px) {
+    .Transaction-Box {
+        padding: 20px 5px;
+    }
+}
