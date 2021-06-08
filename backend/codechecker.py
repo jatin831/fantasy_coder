@@ -7,13 +7,13 @@ from subprocess import CalledProcessError, TimeoutExpired
 
 STATUS_CODES = {
     200: 'OK',
-    201: 'ACCEPTED',
-    400: 'WRONG ANSWER',
+    201: 'AC',
+    400: 'WA',
     401: 'COMPILATION ERROR',
-    402: 'RUNTIME ERROR',
+    402: 'RE',
     403: 'INVALID FILE',
     404: 'FILE NOT FOUND',
-    408: 'TIME LIMIT EXCEEDED'
+    408: 'TLE'
 }
 
 
@@ -57,7 +57,7 @@ class Program:
         if self.language == 'java':
             cmd = 'javac {}'.format(self.fileName)
         elif self.language == 'c':
-            cmd = 'gcc {1}'.format(self.name, self.fileName)
+            cmd = 'gcc -o {0} {1}'.format(self.name, self.fileName)
         elif self.language == 'cpp':
             cmd = 'g++ -o {0} {1}'.format(self.name, self.fileName)
         else:
@@ -68,17 +68,18 @@ class Program:
             return 403, 'File is of invalid type'
 
         try:
-            proc = subprocess.run(
-                cmd,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.PIPE,
-                universal_newlines=True,
-                shell = True
-            )
+            with open("error.txt", "w") as error:
+                proc = subprocess.run(
+                    cmd,
+                    stdout=error,
+                    stderr=error,
+                    universal_newlines=True,
+                    shell = True
+                )
 
             # Check for errors
             if proc.returncode != 0:
-                return 401, proc.stderr
+                return 401, "NA"
             else:
                 return 200, None
         except CalledProcessError as e:
@@ -97,9 +98,10 @@ class Program:
             cmd = 'java {}'.format(self.name)
             print("JAVA COMMAND: ", cmd)
         elif self.language in ['c', 'cpp']:
-            cmd = "./a.out"
+            cmd = "./{}".format(self.name)
             print("C COMMAND: ", cmd)
-        elif self.language == 'python': cmd = 'python3 {}.py'.format(self.name)
+        elif self.language == 'python':
+        	cmd = 'python3 {}.py'.format(self.name)
             
 
         # Invalid files
@@ -108,36 +110,39 @@ class Program:
 
         try:
             with open('calculatedoutput.txt', 'w') as fout:
-                fin = None
-                if self.inputFile and os.path.isfile(self.inputFile):
-                    fin = open(self.inputFile, 'r')
-                proc = subprocess.call(
-                    cmd,
-                    stdin=fin,
-                    stdout=fout,
-                    stderr=subprocess.PIPE,
-                    timeout=self.timeLimit,
-                    shell=True,
-                    universal_newlines=True
-                )
-            # Check for errors
-            if proc != 0:
-                return 402, proc.stderr
-            else:
-                return 200, None
+                with open("error.txt", "w") as error:
+                    fin = None
+                    if self.inputFile and os.path.isfile(self.inputFile):
+                        fin = open(self.inputFile, 'r')
+                    proc = subprocess.call(
+                        cmd,
+                        stdin=fin,
+                        stdout=fout,
+                        stderr=error,
+                        timeout=self.timeLimit,
+                        shell = True,
+                        universal_newlines=True
+                    )
+                    # Check for errors
+                    if proc != 0:
+                        return 402, "NA"
+                    else:
+                        return 200, None
         except TimeoutExpired as tle:
-            print("Return error")
-            return 408, tle
+            print("TLE")
+            return 408, "TLE"
         except CalledProcessError as e:
-            print(e.output)
+            print("called process error", e.output)
         except Exception as e:
-            return 408, e
+            print("default", e)
+            return 420, e
 
         # Perform cleanup
-        if self.language == 'java':
-            os.remove('{}.class'.format(self.name))
-        elif self.language in ['c', 'cpp']:
-            os.remove(self.name)
+        # if self.language == 'java':
+        #     os.remove('{}.class'.format(self.name))
+        # elif self.language in ['c', 'cpp']:
+        #     os.remove(self.name)
+        
 
     def match(self):
         if os.path.isfile(self.actualOutputFile) and os.path.isfile(self.expectedOutputFile):
@@ -193,12 +198,12 @@ def codechecker(filename, inputfile=None, expectedoutput=None, timeout=1, check=
 
 
 if __name__ == '__main__':
-
-    code, msg = codechecker(
-        filename='add.py',               # Source code file
-        inputfile='input.txt',                  # Input file
-        expectedoutput='output.txt',     # Expected output
-        timeout=2,                              # Time limit
-        check=True                              # Set to true to check actual output against expected output
-    )
-    print("----------------\n", code,msg)
+	num = sys.argv[1]
+	code, msg = codechecker(
+					filename=num,
+					inputfile='input.txt',
+					expectedoutput='output.txt',
+					timeout=2,
+					check=True
+				)
+	print("----------------\n", code,msg)
